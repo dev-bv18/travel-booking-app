@@ -1,0 +1,56 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; /* Keep the navbar fixed */
+    top: 0; /* Position at the top of the viewport */
+    left: 0;
+    width: 100%; /* Ensure it spans the full width of the viewport */
+    padding: 20px;
+    background: #00646b;
+    color: white;
+    z-index: 1000; /* Keep the navbar above other elements */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Lemon', cursive;
+  }
+  
+  .navbar-logo {
+    text-decoration: none;
+    color: white;
+  }
+  
+  .navbar-links {
+    display: flex;
+    padding-right: 70px;
+    gap: 20px;
+  }
+.logout-button{
+    background: none;
+    border: none;
+    color: white;
+}
+.logout-button:hover{
+    color:#0ea7b8;
+}
+  
+  .nav-link{
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #0ea7b8;
+  }
+  
+  /* Add margin to the content below the navbar to prevent overlap */
+  body {
+    margin-top: 70px; /* Adjust this value to match the navbar height */
+  }
+  

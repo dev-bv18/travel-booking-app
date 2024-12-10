@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Lemon&display=swap');
+
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: url('../assests/login.gif');
+  background-size: cover;
+}
+
+.auth-form {
+  background: linear-gradient(teal, white);
+  padding: 50px;
+  border-radius: 8px;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.549);
+  max-width: 300px;
+  width: 100%;
+  text-align: center; /* Center align all content in the form */
+}
+
+.auth-form h2 {
+    margin-top: 3px;
+  margin-bottom: 40px;
+  font-family: "Lemon";
+  text-align: center;
+  color: rgb(255, 255, 255);
+  font-size: 50px;
+}
+
+.auth-form input,
+.auth-form select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px auto 20px; /* Adjust margin for better alignment */
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  display: block; /* Ensure inputs take up full width */
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 10px;
+  background: #00646b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.auth-form button:hover {
+  background: #0ea7b8;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+#login-switch{
+    background: none;
+    text-decoration: underline;
+    color: rgb(28, 103, 107);
+}
