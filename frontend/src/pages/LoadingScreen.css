@@ -1,0 +1,16 @@
+/* src/components/LoadingScreen.css */
+
+.loading-container {
+    display: flex;
+    justify-content: center; /* Horizontally centers the image */
+    align-items: center; /* Vertically centers the image */
+    height: 100vh; /* Takes full viewport height */
+    width: 100%; /* Full width */
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Adds a slight background overlay */
+  }
+  
+  img {
+    max-width: 200px; /* Adjust the size of the image */
+    max-height: 200px; /* Adjust the size of the image */
+  }
+  

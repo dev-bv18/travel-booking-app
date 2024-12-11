@@ -28,7 +28,7 @@ export const ADD_TRAVEL_PACKAGE = gql`
 `;
 
 export const BOOK_PACKAGE = gql`
-  mutation ($packageId: ID!, $userId: ID!, $date: String!) {
+  mutation BookPackage($packageId: ID!, $userId: ID!, $date: String!) {
     bookPackage(packageId: $packageId, userId: $userId, date: $date) {
       id
       package {
@@ -40,3 +40,4 @@ export const BOOK_PACKAGE = gql`
     }
   }
 `;
+

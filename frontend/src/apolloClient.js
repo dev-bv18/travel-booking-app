@@ -1,7 +1,19 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink, ApolloLink } from '@apollo/client';
+
+const httpLink = new HttpLink({ uri: 'http://localhost:4000/api' });
+
+const authLink = new ApolloLink((operation, forward) => {
+  const token = localStorage.getItem('auth-token');
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  });
+  return forward(operation);
+});
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/api', 
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

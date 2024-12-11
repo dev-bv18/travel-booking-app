@@ -25,12 +25,17 @@ mongoose.connect(process.env.MONGO_URI, {
 const getUser = (token) => {
   if (token) {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET);
+      // Remove "Bearer" prefix if present
+      const cleanToken = token.replace('Bearer ', '');
+      return jwt.verify(cleanToken, process.env.JWT_SECRET);
     } catch (err) {
-      throw new Error('Session expired');
+      console.error('JWT verification error:', err);
+      throw new Error('Invalid or expired session');
     }
   }
+  return null; // Return null if no token is present
 };
+
 
 // Apollo Server setup
 const server = new ApolloServer({
@@ -41,10 +46,16 @@ const server = new ApolloServer({
     createComplexityLimitRule(1000)
   ],
   context: ({ req }) => {
-    const token = req.headers.authorization;
-    const user = getUser(token);
-    return { models, user };
+    try {
+      const token = req.headers.authorization;
+      const user = getUser(token);
+      return { models, user };
+    } catch (err) {
+      console.error('Context creation error:', err.message);
+      return { models, user: null };
+    }
   }
+  
 });
 
 // Start the server asynchronously

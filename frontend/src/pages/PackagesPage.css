@@ -1,6 +1,7 @@
 .packages-page {
     text-align: center;
     background: url('../assests/herobg.avif');
+    background-size: cover;
     padding: 20px;
   }
   h1.heading {

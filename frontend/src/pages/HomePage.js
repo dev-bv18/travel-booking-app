@@ -10,6 +10,10 @@ import herobg from '../assests/herobg.jpg';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const handleViewBookingHistory = () => {
+    navigate('/booking-history');
+  };
+
 
   // Navigate to the "All Packages" page
   const handleAllPackages = () => {
@@ -52,10 +56,10 @@ const HomePage = () => {
             style={{
               backgroundImage: `url(${cartImage})`,
             }}
-            onClick={handleUserCart}
+            onClick={handleViewBookingHistory}
           >
-            <h2>Your Cart</h2>
-            <p>View the travel packages you have added to your cart.</p>
+            <h2>Your Bookings</h2>
+            <p>View the travel packages you have booked.</p>
           </div>
         </div>
       </div>

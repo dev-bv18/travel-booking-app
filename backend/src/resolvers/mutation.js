@@ -35,36 +35,39 @@ module.exports = {
             throw new AuthenticationError('Error Signing in');
         }
 
-        return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return jwt.sign({ id: user._id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     },
 
     // Book a travel package (auth required)
-    bookPackage: async (parent, { packageId, date }, { models, user }) => {
-        if (!user) {
-            throw new AuthenticationError('You must be signed in to book a package');
+    bookPackage: async (parent, { packageId, userId, date }, { models, user }) => {
+        const finalUserId = userId || user.id; // Use userId from args or the context user
+      
+        if (!finalUserId) {
+          throw new AuthenticationError('You must be signed in to book a package');
         }
-
+      
         const travelPackage = await models.TravelPackage.findById(packageId);
         if (!travelPackage) {
-            throw new Error('Travel package not found');
+          throw new Error('Travel package not found');
         }
-
+      
         if (travelPackage.availability <= 0) {
-            throw new Error('No availability for this package');
+          throw new Error('No availability for this package');
         }
-
+      
         const booking = await models.Booking.create({
-            package: packageId,
-            user: user.id,
-            date,
-            status: 'Confirmed',
+          package: packageId,
+          user: finalUserId,
+          date,
+          status: 'Confirmed',
         });
-
+      
         travelPackage.availability -= 1;
         await travelPackage.save();
-
+      
         return booking.populate('package');
-    },
+      },
+      
 
     // Admin-only mutation to add a new travel package
     addTravelPackage: async (_, { title, description, price, duration, destination, availability }, { models, user }) => {

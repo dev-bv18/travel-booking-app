@@ -3,34 +3,36 @@ import Navbar from './NavBar';
 import './CartPage.css';
 
 const CartPage = () => {
-  const [cart, setCart] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('auth-token');
-    if (!token) {
-      alert('Please log in to view your cart.');
+    const userId = localStorage.getItem('user-id');
+
+    if (!token || !userId) {
+      alert('Please log in to view your bookings.');
       return;
     }
 
-    // Fetch the user's cart from the backend
-    fetch('http://localhost:4000/api/cart', {
+    // Fetch bookings for the user
+    fetch(`http://localhost:4000/api/bookings/${userId}`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
-      .then((data) => setCart(data))
-      .catch((error) => console.error('Error fetching cart:', error));
+      .then((data) => setBookings(data))
+      .catch((error) => console.error('Error fetching bookings:', error));
   }, []);
 
-  if (cart.length === 0) {
+  if (bookings.length === 0) {
     return (
       <div>
         <Navbar />
         <div className="cart-page">
-          <h1>Your Cart</h1>
-          <p>Your cart is empty.</p>
+          <h1>Your Bookings</h1>
+          <p>You have no bookings yet.</p>
         </div>
       </div>
     );
@@ -42,12 +44,12 @@ const CartPage = () => {
       <div className="cart-page">
         <h1>Your Bookings</h1>
         <div className="cart-list">
-          {cart.map((pkg) => (
-            <div className="cart-card" key={pkg.id}>
-              <h2>{pkg.title}</h2>
-              <p className="place">{pkg.destination}</p>
-              <p><strong>Duration:</strong> {pkg.duration}</p>
-              <p className="price">${pkg.price}</p>
+          {bookings.map((booking) => (
+            <div className="cart-card" key={booking.id}>
+              <h2>{booking.package.title}</h2>
+              <p className="place">{booking.package.destination}</p>
+              <p><strong>Duration:</strong> {booking.package.duration}</p>
+              <p className="price">₹{booking.package.price}</p>
             </div>
           ))}
         </div>
