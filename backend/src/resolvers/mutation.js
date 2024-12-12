@@ -41,7 +41,7 @@ module.exports = {
     // Book a travel package (auth required)
     bookPackage: async (parent, { packageId, userId, date }, { models, user }) => {
         const finalUserId = userId || user.id; // Use userId from args or the context user
-      
+       const User=await models.User.findById(userId);
         if (!finalUserId) {
           throw new AuthenticationError('You must be signed in to book a package');
         }
@@ -56,8 +56,8 @@ module.exports = {
         }
       
         const booking = await models.Booking.create({
-          package: packageId,
-          user: finalUserId,
+          package: travelPackage,
+          user: User,
           date,
           status: 'Confirmed',
         });
