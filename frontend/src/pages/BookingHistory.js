@@ -4,6 +4,8 @@ import { GET_BOOKING_HISTORY } from '../graphql/queries';
 import Navbar from './NavBar';
 import './BookingHistory.css';
 import LoadingScreen from './LoadingScreen';
+import Empty from './Empty';
+import { Link } from 'react-router-dom';
 
 const BookingHistory = () => {
   const [userId, setUserId] = useState(null);
@@ -72,8 +74,12 @@ const BookingHistory = () => {
       <div className="booking-history">
         <h1>Your Booking History</h1>
         {bookingHistory.length === 0 ? (
-          <p>You have no bookings yet. Explore packages to start your journey!</p>
-        ) : (
+          <div>
+         <Empty/>
+         <p id="message">You currently do not have any bookings.</p>
+         <Link to="/packages">
+          <p id="start">Start Booking!</p>
+         </Link></div>) : (
           <ul>
             {bookingHistory.map((booking) => (
               <li key={booking.id} className="booking-card">

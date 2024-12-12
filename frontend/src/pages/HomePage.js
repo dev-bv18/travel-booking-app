@@ -38,7 +38,7 @@ const HomePage = () => {
           transition: 'background-image 1s ease-in-out',
         }}
       >
-        <h1 className="heading">Welcome to Tripify ✈️
+        <h1 className="heading">Welcome to <span>Tripify</span> ✈️
         </h1>
         <div className="card-container">
           <div

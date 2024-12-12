@@ -48,6 +48,19 @@
     font-weight: bold;
     color: #29626b;
   }
+  #start{
+    color: white;
+    font-size: 30px;
+  }
+  #message{
+    color: white;
+    font-size: 20px;
+  }
+  #start:hover{
+    color: rgb(121, 231, 255);
+    font-size: 31px;
+    transition: all 0.2s ease-in-out;
+  }
   #status{
     text-align: end;
     font-size: large;
