@@ -19,7 +19,7 @@
   .banner {
     width: 100%;
     height: 200px;
-    background: linear-gradient(90deg, rgba(0, 128, 128, 0.6), rgb(254, 254, 254)), url('../assests/discount.webp');
+    background: linear-gradient(30deg, rgba(0, 0, 0, 0.6), rgb(255, 255, 255)), url('../assests/discount.webp');
     background-size: contain;
     padding: 0px;
     margin: 0px;
@@ -27,7 +27,7 @@
   
   .left-banner {
     float: left;
-    color: white;
+    color: #ffffff;
     font-family: 'Lemon';
     font-size: 60px;
     padding-top: 40px;
@@ -79,6 +79,24 @@
     margin-top:10px;
     font-family:"Arial";
   }
+  .blinking-text {
+    animation: blinking 1s infinite; /* Blinking effect every 1 second */
+    color: red; /* Highlight with red color */
+    font-weight: bold;
+  }
+  
+  @keyframes blinking {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
   
   .package-card .place {
     font-size: 20px;

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloWrapper } from './apolloClient';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
+import Footer from './pages/Footer';
 import PackagesPage from './pages/PackagesPage';
 import CartPage from './pages/CartPage';
 import BookingHistory from './pages/BookingHistory';
@@ -21,6 +22,8 @@ const App = () => {
           <Route path="/booking-history" element={<BookingHistory />} />
         </Routes>
       </Router>
+      
+    <Footer/>
     </ApolloWrapper>
   );
 };

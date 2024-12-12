@@ -9,7 +9,7 @@ import './PackagesPage.css';
 import LoadingScreen from './LoadingScreen';
 
 const PackagesPage = () => {
-  const { loading, error, data } = useQuery(GET_PACKAGES);
+  const { loading, error, data, refetch } = useQuery(GET_PACKAGES);
   const [bookPackage] = useMutation(BOOK_PACKAGE);
   const [showContent, setShowContent] = useState(false); // state to control when to show content
 
@@ -18,7 +18,7 @@ const PackagesPage = () => {
       const timeout = setTimeout(() => {
         setShowContent(true); // Show content after 2 seconds
       }, 2000);
-      
+
       return () => clearTimeout(timeout); // Clean up timeout if the component is unmounted
     }
   }, [loading]);
@@ -34,13 +34,15 @@ const PackagesPage = () => {
     }
 
     try {
-      const date = new Date().toISOString().split('T')[0]; // Use today's date
+     //const date = new Date().toISOString().split('T')[0];
+     const date= new Date().toLocaleDateString();// Use today's date
       const response = await bookPackage({
         variables: { packageId, userId, date },
       });
 
       if (response?.data?.bookPackage) {
         alert(`Booking successful for "${response.data.bookPackage.package.title}"!`);
+        refetch(); // Refetch packages to update availability
       } else {
         alert('Failed to book the package. Please try again.');
       }
@@ -50,10 +52,13 @@ const PackagesPage = () => {
     }
   };
 
-  if (loading || !showContent) return<div>
-    <Navbar/>
-     <LoadingScreen />
-  </div>; // Show loading screen until content is ready
+  if (loading || !showContent)
+    return (
+      <div>
+        <Navbar />
+        <LoadingScreen />
+      </div>
+    ); // Show loading screen until content is ready
   if (error) return <p>Error: {error.message}</p>;
 
   return (
@@ -72,10 +77,19 @@ const PackagesPage = () => {
               <p className="place">{pkg.destination}</p>
               <div className="info">
                 <p>{pkg.duration} itinerary</p>
-                <p><strong>Available:</strong> {pkg.availability}</p>
+                <p>
+                  <strong>Available:</strong>{' '}
+                  {pkg.availability < 10 ? (
+                    <span className="blinking-text">{pkg.availability} (Few left)</span>
+                  ) : (
+                    pkg.availability
+                  )}
+                </p>
               </div>
               <p className="desc">{pkg.description}</p>
-              <p className="price"><span>₹{pkg.price + pkg.price * 0.50}</span> ₹{pkg.price}</p>
+              <p className="price">
+                <span>₹{pkg.price + pkg.price * 0.5}</span> ₹{pkg.price}
+              </p>
               <button
                 className="btn-book"
                 onClick={() => handleBookPackage(pkg.id)}
