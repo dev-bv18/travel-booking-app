@@ -207,4 +207,6 @@ const ErrorText = styled.p`
   color: red;
   font-size: 0.9rem;
   margin-top: 10px;
+  bottom:120px;
+  position:absolute;
 `;

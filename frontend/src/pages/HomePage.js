@@ -417,11 +417,14 @@ const MainHeading = styled.h1`
 `;
 
 const Description = styled.p`
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 600;
-  color:rgba(255, 255, 155, 0.67);
+  color:rgba(255, 255, 255, 0.67);
   margin-bottom: 38px;
   padding-bottom:60px;
+  transition: all 0.1s ease-in;
+  &:hover{
+  color:rgb(255, 255, 255);}
 `;
 
 const StartButton = styled.button`
@@ -432,10 +435,11 @@ const StartButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s;
 
   &:hover {
-    background:rgb(38, 79, 87);
+    background:rgb(4, 68, 72);
+    color:rgb(214, 225, 0);
   }
 `;
 
@@ -506,7 +510,7 @@ const ImageSection = styled.div`
 `;
 
 const StyledImage = styled.img`
-  width: 388px;
+  width: 508px;
   height: 338px;
   border-radius: 8px;
 `;
