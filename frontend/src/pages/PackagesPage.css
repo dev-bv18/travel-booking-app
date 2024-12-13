@@ -21,8 +21,8 @@
     height: 200px;
     background: linear-gradient(30deg, rgba(0, 0, 0, 0.6), rgb(255, 255, 255)), url('../assests/discount.webp');
     background-size: contain;
-    padding: 0px;
-    margin: 0px;
+    padding-top: 0px;
+    margin-top: 70px;
   }
   
   .left-banner {
