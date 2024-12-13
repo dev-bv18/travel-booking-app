@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NavBar from './NavBar';
 import {jwtDecode} from 'jwt-decode';
+import Footer from './Footer';
 import bgImage from '../assests/login.gif'; // Ensure the path to your background image is correct.
 
 const AuthPage = () => {
   const [form, setForm] = useState({ username: '', email: '', password: '', role: 'user' });
   const [authError, setAuthError] = useState('');
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [signUp] = useMutation(SIGN_UP);
   const [login] = useMutation(LOGIN);
   const navigate = useNavigate();
@@ -93,7 +94,8 @@ const AuthPage = () => {
         </SwitchButton>
       </AuthForm>
       {authError && <ErrorText>{authError}</ErrorText>}
-    </AuthContainer></div>
+    </AuthContainer>
+    <Footer/></div>
   
   );
 };

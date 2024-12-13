@@ -7,6 +7,7 @@ import { BOOK_PACKAGE } from '../graphql/mutation';
 import Navbar from './NavBar';
 import './PackagesPage.css';
 import LoadingScreen from './LoadingScreen';
+import Footer from './Footer';
 
 const PackagesPage = () => {
   const { loading, error, data, refetch } = useQuery(GET_PACKAGES);
@@ -100,6 +101,7 @@ const PackagesPage = () => {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

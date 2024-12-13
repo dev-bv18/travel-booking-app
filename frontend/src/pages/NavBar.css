@@ -10,7 +10,7 @@
     padding: 20px;
     background: #00646b;
     color: white;
-    z-index: 1000; /* Keep the navbar above other elements */
+    z-index: 10; /* Keep the navbar above other elements */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
   }
   
@@ -22,7 +22,7 @@
   
   .navbar-logo {
     text-decoration: none;
-    color: white;
+    color: yellow;
   }
   
   .navbar-links {

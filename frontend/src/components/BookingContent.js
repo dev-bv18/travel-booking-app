@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import cart from "../assests/cart.jpg"; // Replace with the actual path
 import packageImage from "../assests/package.jpg"; // Replace with the actual path
-import journeyImage from "../assests/herobg.jpg"; // Replace with the actual path for the new section image
+import journeyImage from "../assests/travel.jpg"; // Replace with the actual path for the new section image
 import { useNavigate } from 'react-router-dom';
 
 const BookingContent = () => {
@@ -69,7 +69,7 @@ const ContentContainer = styled.div`
 
 const SectionHeading = styled.h4`
   font-size: 1rem;
-  color: #0056d2;
+  color: teal;
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 10px;
@@ -90,13 +90,14 @@ const CardsContainer = styled.div`
 `;
 
 const Card = styled.div`
-  background: white;
+  background:teal;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   width: 48%; /* Adjust for two cards side by side */
   display: flex;
   flex-direction: column;
+  transition:all 0.2s ease-in-out;
 
   @media (max-width: 768px) {
     width: 100%; /* Stacks cards on smaller screens */
@@ -106,7 +107,7 @@ const Card = styled.div`
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 
     h3 {
-      color: #0056d2;
+      color:yellow;
     }
   }
     
@@ -124,20 +125,20 @@ const CardContent = styled.div`
 
 const CardTitle = styled.h3`
   font-size: 1.2rem;
-  color: #212529;
+  color:rgb(255, 255, 255);
   font-weight: bold;
   margin-bottom: 10px;
 `;
 
 const CardDescription = styled.p`
   font-size: 1rem;
-  color: #495057;
+  color:rgb(173, 220, 213);
   margin-bottom: 20px;
 `;
 
 const LearnMore = styled.a`
   font-size: 1rem;
-  color: #0056d2;
+  color:rgb(212, 238, 235);
   font-weight: bold;
   text-decoration: none;
 
@@ -166,7 +167,7 @@ const JourneyText = styled.div`
 
 const JourneyHeading = styled.h4`
   font-size: 1rem;
-  color: #0056d2;
+  color:teal;
   font-weight: bold;
   text-transform: uppercase;
   margin-bottom: 10px;

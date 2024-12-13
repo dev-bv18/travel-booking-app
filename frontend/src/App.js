@@ -29,7 +29,7 @@ const App = () => {
         </AppContainer>
        
       </Router> 
-    <Footer/>
+    
     </ApolloWrapper>
   );
 };

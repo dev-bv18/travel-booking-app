@@ -6,6 +6,7 @@ import './BookingHistory.css';
 import LoadingScreen from './LoadingScreen';
 import Empty from './Empty';
 import { Link } from 'react-router-dom';
+import Footer from './Footer';
 
 const BookingHistory = () => {
   const [userId, setUserId] = useState(null);
@@ -98,6 +99,7 @@ const BookingHistory = () => {
           </ul>
         )}
       </div>
+      <Footer/>
     </div>
   );
 };

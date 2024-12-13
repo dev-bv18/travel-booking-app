@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './NavBar';
 import './CartPage.css';
+import Footer from './Footer';
 
 const CartPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -34,6 +35,7 @@ const CartPage = () => {
           <h1>Your Bookings</h1>
           <p>You have no bookings yet.</p>
         </div>
+        <Footer/>
       </div>
     );
   }
@@ -54,6 +56,7 @@ const CartPage = () => {
           ))}
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

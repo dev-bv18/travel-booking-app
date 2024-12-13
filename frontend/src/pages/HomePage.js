@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import image from "../assests/img1.jpg";
-import img2 from "../assests/herobg.jpg";
-import img3 from "../assests/herobg.jpg";
-import img4 from "../assests/herobg.jpg";
+import image from "../assests/img1.avif";
+import img2 from "../assests/img2.jpg";
+import img3 from "../assests/img3.webp";
+import img4 from "../assests/img4.webp";
 import banner from "../assests/banner1.webp";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 function HomePage() {
   const [showAnimation, setShowAnimation] = useState(true); // Initially true to show animation
@@ -16,7 +17,7 @@ function HomePage() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowAnimation(false); // Hide animation after 2 seconds
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timeout); // Clean up the timeout on component unmount
   }, []);
@@ -36,25 +37,19 @@ function HomePage() {
 
   return (
     <div>
-      <NavBar />
       <Container>
-        {showAnimation ? (
-          <AnimationContainer>
-            <WelcomeText>
-              Welcome to <span>Tripify!</span>
-            </WelcomeText>
-          </AnimationContainer>
-        ) : (
-          <>
-            {/* Main Content */}
+          <AnimationOverlay>
+        <IntroContainer>
+      <span className="title">Tripify</span>
+      <span className="airplane">&#9992;</span>
+    </IntroContainer>
+    </AnimationOverlay>   
+      <NavBar />
             <Content>
               <MainHeading>Say Hi to <span>Tripify</span>! </MainHeading>
               <Description>Book and manage your travel effortlessly✈️</Description>
               <StartButton onClick={handleStartBooking}>Start Booking</StartButton>
             </Content>
-
-
-            {/* Additional Content */}
             <MainContent>
               <TextSection>
                 <SmallHeading>Explore With Ease</SmallHeading>
@@ -78,8 +73,6 @@ function HomePage() {
                 <StyledImage src={image} alt="Travel" />
               </ImageSection>
             </MainContent>
-
-            {/* Packages Section */}
             <PackagesSection>
               <Heading>Explore Travel Packages</Heading>
               <SubHeading>Browse and book your perfect getaway.</SubHeading>
@@ -169,59 +162,90 @@ function HomePage() {
               </InfoHours>
             </ContactInfo>
             </ContactSection>
-          </>
-        )}
       </Container>
+      
+      <Footer/>
     </div>
   );
 }
 
 export default HomePage;
 // Styled Components (unchanged except for `AnimationContainer`)
-const AnimationContainer = styled.div`
+
+const AnimationOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 11; /* Ensures it stays above other components */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, teal, rgb(50, 169, 199));
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: #e0f7fa;
-  padding: 40px;
-  border-radius: 10px;
+  animation: fadeOut 3s ease-out forwards; /* Smooth fade-out animation */
+@keyframes fadeOut{
+ 0%{
+    opacity: 1;
+  }
+    80%{
+    opacity:1;}
+  100% {
+    opacity: 0;
+    display:none;
+  }
+}
+  `;
+
+const IntroContainer = styled.div`
   text-align: center;
-`;
+  font-family: "Arial", sans-serif;
 
-const WelcomeText = styled.h1`
-  font-size: 3rem;
-  color: teal;
-  margin-bottom: 20px;
-
-  span {
-    color: teal;
-    font-family:'lemon';
+  .title {
+    font-size: 4rem;
+    font-weight: bold;
+    color: white;
+    font-family: "Lemon";
+    display: inline-block;
+        animation: titleAirplaneSync 2s ease-in-out forwards;
   }
-`;
 
-// Styled Components
-const NavigationCard = styled.div`
-  width: 300px;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px;
-  color: white;
-  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.7);
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  .airplane {
+    position: absolute;
+    font-size: 7rem;
+    color: white;
+    animation: airplaneMotion 3s ease-in-out forwards;
   }
+
+  @keyframes airplaneMotion {
+    0% {
+      top: 210%;
+      left: 0%;
+      transform: rotate(-45deg);
+    }
+    100% {
+      top: -40%;
+      left: 85%;
+      transform: rotate(-45deg);
+    }
+  }
+     @keyframes titleAirplaneSync {
+    0% {
+      font-size: 4rem;
+    }
+    25% {
+      font-size: 3.8rem;
+    }
+    75% {
+      font-size: 3.8rem;
+    }
+    100% {
+      font-size: 4rem;
+    }
+  }
 `;
+
+// Other existing styled components remain unchanged
 const FormWrapper = styled.div`
   flex: 1;
   max-width: 700px;
@@ -360,7 +384,7 @@ const Container = styled.div`
   align-items: center;
   min-height: 100vh;
   padding-top:70px;
-  background:white;
+  background:#f0f8ff;
 `;
 
 const Content = styled.div`
@@ -371,7 +395,7 @@ const Content = styled.div`
       rgba(0, 0, 0, 0.41) /* End with more opaque black */
     ),
     url(${banner});
-  height: 400px;
+  height: 600px;
   padding-bottom: 70px;
   background-size: cover;
   background-position: center; /* Adjust the vertical position upward */
@@ -386,7 +410,7 @@ const MainHeading = styled.h1`
   color:rgb(255, 255, 255);
   font-weight: 600;
   margin-top:60px;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
   span{
   font-family:"lemon";
   color:white;}
@@ -395,8 +419,8 @@ const MainHeading = styled.h1`
 const Description = styled.p`
   font-size: 30px;
   font-weight: 600;
-  color:rgba(255, 255, 255, 0.79);
-  margin-bottom: 40px;
+  color:rgba(255, 255, 155, 0.67);
+  margin-bottom: 38px;
   padding-bottom:60px;
 `;
 
@@ -411,7 +435,7 @@ const StartButton = styled.button`
   transition: background 0.3s;
 
   &:hover {
-    background:rgb(11, 101, 113);
+    background:rgb(38, 79, 87);
   }
 `;
 
@@ -449,7 +473,7 @@ const SmallHeading = styled.h3`
 const ContentHeading = styled.h1`
   font-size: 2.5rem;
   font-weight: bold;
-  color: #212529;
+  color:rgb(26, 79, 92);
   margin-bottom: 20px;
 `;
 
@@ -482,7 +506,7 @@ const ImageSection = styled.div`
 `;
 
 const StyledImage = styled.img`
-  width: 338px;
+  width: 388px;
   height: 338px;
   border-radius: 8px;
 `;
@@ -501,7 +525,7 @@ const Heading = styled.h3`
 
 const SubHeading = styled.h2`
   font-size: 2rem;
-  color: #212529;
+  color: rgb(26, 79, 92);
   font-weight: 600;
   margin-bottom: 40px;
 `;
