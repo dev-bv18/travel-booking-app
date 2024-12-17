@@ -27,7 +27,7 @@
   
   .navbar-links {
     display: flex;
-    padding-right: 70px;
+    padding-right: 75px;
     font-family: Arial,sans-serif;
     gap: 20px;
   }
@@ -65,12 +65,20 @@
 .dropdown-toggle {
   color: rgb(255, 255, 255);
 }
+.dropdown-toggle img{
+  float: right;
+  height: 30px;
+  right: -37px;
+  top:-5px;
+  position: absolute;
+  
+}
 
 .dropdown-menu {
   position: absolute;
   margin-top: 10px;
   top: 100%;
-  right: 0;
+  right: -25px;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 5px;

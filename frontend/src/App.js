@@ -7,7 +7,7 @@ import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
 import PackagesPage from './pages/PackagesPage';
 import CartPage from './pages/CartPage';
-
+import ConfirmBooking from './pages/ConfirmBooking';
 import styled from "styled-components";
 import BookingHistory from './pages/BookingHistory';
 import Booking from './pages/Booking';
@@ -26,6 +26,8 @@ const App = () => {
           <Route path="/booking" element={<Booking/>}/>
           <Route path="/booking-history" element={<BookingHistory />} />
           <Route path="/admin" element={<AdminDashboard/>}/>
+          <Route path="/confirm-booking" element={<ConfirmBooking />} />
+
                   </Routes>
         </AppContainer>
        

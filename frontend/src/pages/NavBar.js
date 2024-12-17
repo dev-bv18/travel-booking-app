@@ -61,8 +61,9 @@ const NavBar = () => {
         {isLoggedIn ? (
           <div className="dropdown">
             <span className="nav-link dropdown-toggle" onClick={toggleDropdown}>
-              {username} 
+              {username} <img src={`https://avatar.iran.liara.run/username?username=${username}`}/>
             </span>
+            
             {showDropdown && (
               <div className="dropdown-menu">
                 <Link to="/booking-history" className="dropdown-item">

@@ -38,5 +38,14 @@ module.exports = gql`
         loginUser(email: String!, password: String!): String
         bookPackage(packageId: ID!, userId: ID!, date: String!): Booking
         addTravelPackage(title: String!, description: String!, price: Float!, duration: String!, destination: String!, availability: Int!): TravelPackage
+         updateTravelPackage(
+      id: ID!
+      title: String!
+      description: String!
+      price: Float!
+      duration: String!
+      destination: String!
+      availability: Int!
+    ): TravelPackage
     }
 `;

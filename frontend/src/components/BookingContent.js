@@ -6,16 +6,13 @@ import journeyImage from "../assests/travel.jpg"; // Replace with the actual pat
 import { useNavigate } from 'react-router-dom';
 
 const BookingContent = () => {
-  const navigate = useNavigate();
-
-  // Navigate to the "All Packages" page
+  const navigate = useNavigate(); 
   const handleAllPackages = () => {
     navigate('/packages');
   };
 
-  // Navigate to the "User Cart" page
   const handleUserCart = () => {
-    navigate('/booking-history');
+    navigate('/cart');
   };
   return (
     <ContentContainer>

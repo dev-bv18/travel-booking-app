@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_PACKAGES } from '../graphql/queries';
-import { BOOK_PACKAGE } from '../graphql/mutation';
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import Navbar from './NavBar';
 import './PackagesPage.css';
@@ -13,9 +13,11 @@ const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 const PackagesPage = () => {
   const { loading, error, data, refetch } = useQuery(GET_PACKAGES);
-  const [bookPackage] = useMutation(BOOK_PACKAGE);
+  //const [bookPackage] = useMutation(BOOK_PACKAGE);
   const [images, setImages] = useState({});
   const [showContent, setShowContent] = useState(false);
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const preloadImages = async () => {
       if (data?.getPackages) {
@@ -58,34 +60,9 @@ const PackagesPage = () => {
     }
   };
 
-  const handleBookPackage = async (packageId) => {
-    const token = localStorage.getItem('auth-token');
-    const userId = localStorage.getItem('user-id');
-
-    if (!token || !userId) {
-      alert('Please log in to book packages.');
-      window.location.href = '/auth';
-      return;
-    }
-
-    try {
-      const date = new Date().toLocaleDateString();
-      const response = await bookPackage({
-        variables: { packageId, userId, date },
-      });
-
-      if (response?.data?.bookPackage) {
-        alert(`Booking successful for "${response.data.bookPackage.package.title}"!`);
-        refetch();
-      } else {
-        alert('Failed to book the package. Please try again.');
-      }
-    } catch (err) {
-      console.error('Error booking package:', err);
-      alert('Error while booking the package.');
-    }
+  const handleBookNow = (pkg) => {
+    navigate("/confirm-booking", { state: { packageDetails: pkg } }); // Pass package details via state
   };
-
   if (loading || !showContent)
     return (
       <div>
@@ -130,7 +107,7 @@ const PackagesPage = () => {
                     <OldPrice>₹{pkg.price + pkg.price * 0.5}</OldPrice> ₹{pkg.price}
                   </Price>
                   {(pkg.availability===0)?<BookButton disabled>Unavailable</BookButton>:
-                  <BookButton onClick={() => handleBookPackage(pkg.id)}>Book Now</BookButton>}
+                  <BookButton onClick={() => handleBookNow(pkg)}>Book Now</BookButton>}
                 </CardContent>
               </PackageCard>
             ))}
@@ -166,8 +143,8 @@ const PackagesContainer = styled.div`
 `;
 const PackageCard = styled.div`
   background: linear-gradient(-90deg,
-    rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.28),
-    rgba(0, 0, 0, 0.93) 
+    rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.47),
+    rgba(0, 0, 0, 0.79) 
   ), url(${(props) => props.backgroundimage});
   background-size: cover;
   background-position: center;

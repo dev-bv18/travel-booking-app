@@ -13,7 +13,7 @@ const BookingHistory = () => {
   const [showLoadingScreen, setShowLoadingScreen] = useState(true); // State to control the loading screen visibility
   const { loading, error, data, refetch } = useQuery(GET_BOOKING_HISTORY, {
     variables: { userId },
-    skip: !userId, // Skip query execution until userId is available
+    skip: !userId,
   });
 
   useEffect(() => {

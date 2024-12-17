@@ -40,8 +40,9 @@ module.exports = {
 
     // Book a travel package (auth required)
     bookPackage: async (parent, { packageId, userId, date }, { models, user }) => {
-        const finalUserId = userId || user.id; 
+        const finalUserId = userId || user.id;          
        const User=await models.User.findById(userId);
+       console.log(User);
         if (!finalUserId) {
           throw new AuthenticationError('You must be signed in to book a package');
         }
@@ -87,4 +88,35 @@ module.exports = {
         await newPackage.save();
         return newPackage;
     },
+    updateTravelPackage: async (_, { id, title, description, price, duration, destination, availability }, { models, user }) => {
+        // Ensure only an admin can update the package
+        if (!user || user.role !== 'admin') {
+          throw new Error('Unauthorized: Only admins can update travel packages');
+        }
+  
+        try {
+          // Find the package by ID and update fields
+          const updatedPackage = await models.TravelPackage.findByIdAndUpdate(
+            id,
+            {
+              title,
+              description,
+              price,
+              duration,
+              destination,
+              availability,
+            },
+            { new: true } // Return the updated document
+          );
+  
+          if (!updatedPackage) {
+            throw new Error('Travel package not found');
+          }
+  
+          return updatedPackage;
+        } catch (err) {
+          console.error('Error updating package:', err);
+          throw new Error('Failed to update travel package');
+        }
+      },
 };
