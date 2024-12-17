@@ -40,11 +40,11 @@ const NavBar = () => {
     setIsLoggedIn(false);
     setUserId(null);
     setUsername(null);
-    navigate("/auth"); // Redirect to login page after logout
+    navigate("/auth"); 
   };
 
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown); // Toggle dropdown visibility
+    setShowDropdown(!showDropdown); 
   };
 
   return (
