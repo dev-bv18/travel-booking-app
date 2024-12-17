@@ -6,7 +6,6 @@ const helmet = require('helmet');
 const cors = require('cors');
 const depthLimit = require('graphql-depth-limit');
 const { createComplexityLimitRule } = require('graphql-validation-complexity');
-const { authenticate } = require('./utils/auth');
 const models = require('./models');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
@@ -25,7 +24,6 @@ mongoose.connect(process.env.MONGO_URI, {
 const getUser = (token) => {
   if (token) {
     try {
-      // Remove "Bearer" prefix if present
       const cleanToken = token.replace('Bearer ', '');
       return jwt.verify(cleanToken, process.env.JWT_SECRET);
     } catch (err) {
@@ -33,7 +31,7 @@ const getUser = (token) => {
       throw new Error('Invalid or expired session');
     }
   }
-  return null; // Return null if no token is present
+  return null; 
 };
 
 
@@ -58,7 +56,6 @@ const server = new ApolloServer({
   
 });
 
-// Start the server asynchronously
 const startServer = async () => {
   await server.start();  // Await server start
   server.applyMiddleware({ app, path: '/api' }); // Apply middleware after the server starts

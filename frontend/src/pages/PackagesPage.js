@@ -61,7 +61,7 @@ const PackagesPage = () => {
   };
 
   const handleBookNow = (pkg) => {
-    navigate("/confirm-booking", { state: { packageDetails: pkg } }); // Pass package details via state
+    navigate("/confirm-booking", { state: { packageDetails: pkg } }); 
   };
   if (loading || !showContent)
     return (
