@@ -23,6 +23,7 @@ export const ADD_TRAVEL_PACKAGE = gql`
     addTravelPackage(title: $title, description: $description, price: $price, duration: $duration, destination: $destination, availability: $availability) {
       id
       title
+      destination
     }
   }
 `;

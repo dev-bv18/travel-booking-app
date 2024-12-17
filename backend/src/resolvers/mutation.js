@@ -40,7 +40,7 @@ module.exports = {
 
     // Book a travel package (auth required)
     bookPackage: async (parent, { packageId, userId, date }, { models, user }) => {
-        const finalUserId = userId || user.id; // Use userId from args or the context user
+        const finalUserId = userId || user.id; 
        const User=await models.User.findById(userId);
         if (!finalUserId) {
           throw new AuthenticationError('You must be signed in to book a package');

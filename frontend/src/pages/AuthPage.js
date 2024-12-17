@@ -7,6 +7,7 @@ import NavBar from './NavBar';
 import {jwtDecode} from 'jwt-decode';
 import Footer from './Footer';
 import bgImage from '../assests/login.gif'; 
+import { decode } from 'punycode';
 
 const AuthPage = () => {
   const [form, setForm] = useState({ username: '', email: '', password: '', role: 'user' });
@@ -33,12 +34,12 @@ const AuthPage = () => {
         const token = data?.loginUser;
         if (token) {
           const decoded = jwtDecode(token);
-          console.log(decoded.username);
+          console.log(decoded.role);
           localStorage.setItem('auth-token', token);
           localStorage.setItem('user-id', decoded.id);
           localStorage.setItem('email', form.email);
           localStorage.setItem('username',decoded.username);
-         
+         localStorage.setItem('role',decoded.role);
           navigate('/');
         } else {
           throw new Error('Invalid login response');

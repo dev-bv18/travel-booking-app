@@ -8,7 +8,8 @@ import styled from 'styled-components';
 import Navbar from './NavBar';
 import './PackagesPage.css';
 import LoadingScreen from './LoadingScreen';
-import Footer from './Footer';const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
+import Footer from './Footer';
+const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 const PackagesPage = () => {
   const { loading, error, data, refetch } = useQuery(GET_PACKAGES);
@@ -128,14 +129,16 @@ const PackagesPage = () => {
                   <Price>
                     <OldPrice>₹{pkg.price + pkg.price * 0.5}</OldPrice> ₹{pkg.price}
                   </Price>
-                  <BookButton onClick={() => handleBookPackage(pkg.id)}>Book Now</BookButton>
+                  {(pkg.availability===0)?<BookButton disabled>Unavailable</BookButton>:
+                  <BookButton onClick={() => handleBookPackage(pkg.id)}>Book Now</BookButton>}
                 </CardContent>
               </PackageCard>
             ))}
           </PackagesContainer>
         </Content>
-        <Footer />
       </PageContainer>
+      
+      <Footer />
     </div>
   );
 };
@@ -235,19 +238,28 @@ const OldPrice = styled.span`
 `;
 
 const BookButton = styled.button`
-  background:teal;
+  background: teal;
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-  float:right;
+  float: right;
   transition: background 0.3s;
 
+  /* Disabled state */
+  &:disabled {
+    background: rgb(1, 76, 68);
+    color:grey;
+    cursor: not-allowed;
+  }
+
+  /* Hover state */
   &:hover {
-    background:rgb(1, 76, 68);
-    color:yellow;
+    background: rgb(1, 76, 68);
+    color: yellow;
   }
 `;
+
 

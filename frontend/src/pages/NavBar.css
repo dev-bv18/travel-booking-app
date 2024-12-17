@@ -10,7 +10,7 @@
     padding: 20px;
     background: #00646b;
     color: white;
-    z-index: 10; /* Keep the navbar above other elements */
+    z-index: 10;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
   }
   
@@ -52,9 +52,60 @@
   .nav-link:hover {
     color: yellow;
   }
-  
-  /* Add margin to the content below the navbar to prevent overlap */
   body {
-    margin-top: 70px; /* Adjust this value to match the navbar height */
+    margin-top: 70px; 
   }
-  
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: Arial,sans-serif;
+  cursor: pointer;
+}
+
+.dropdown-toggle {
+  color: rgb(255, 255, 255);
+}
+
+.dropdown-menu {
+  position: absolute;
+  margin-top: 10px;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  min-width: 150px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  padding: 10px;
+  display: block;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f8ff;
+  color: #00646b;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: red;
+  text-align: left;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.logout-button:hover {
+  background-color:  #f0f8ff;
+  color:black;
+}
