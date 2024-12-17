@@ -18,7 +18,7 @@ const ConfirmBooking = () => {
     date: new Date().toISOString().split("T")[0],
   });
 
-  const additionalCharges = 200; // Additional charges like taxes or service fees
+  const additionalCharges = 200; 
   const totalPrice = state.packageDetails.price + additionalCharges;
 
   const handleChange = (e) => {

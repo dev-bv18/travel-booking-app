@@ -12,7 +12,7 @@ const BookingContent = () => {
   };
 
   const handleUserCart = () => {
-    navigate('/cart');
+    navigate('/booking-history');
   };
   return (
     <ContentContainer>
@@ -32,9 +32,9 @@ const BookingContent = () => {
         <Card onClick={handleUserCart}>
           <CardImage src={cart} alt="Book your trip" />
           <CardContent>
-            <CardTitle>Your chosen Travel Packages <Arrow>&gt;</Arrow></CardTitle>
+            <CardTitle>Your booked Travel Packages <Arrow>&gt;</Arrow></CardTitle>
             <CardDescription>
-              Securely book your chosen travel package with ease.
+              All your Bookings in one place.
             </CardDescription>
             <LearnMore href="#">Learn more</LearnMore>
           </CardContent>

@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import updateImage from "../assests/img3.webp"; // Replace with the actual path to the image
+import updateImage from "../assests/img4.webp"; // Replace with the actual path to the image
+import NavBar from "../pages/NavBar";
+import Footer from "../pages/Footer";
 
 const UpdateContent = () => {
-  return (
+  return (<div>
+    <NavBar/>
     <Container>
       <ImageWrapper>
         <Image src={updateImage} alt="Real-Time Updates" />
@@ -24,6 +27,9 @@ const UpdateContent = () => {
         <Button>Schedule Appointment</Button>
       </ContentWrapper>
     </Container>
+    <Footer/>
+  </div>
+    
   );
 };
 
@@ -36,6 +42,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 40px;
+  padding-top:80px;
   background-color: #f9f9f9;
 `;
 
@@ -65,7 +72,7 @@ const ContentWrapper = styled.div`
 `;
 
 const Heading = styled.h3`
-  color: #0056d2;
+  color: teal;
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 20px;
@@ -74,13 +81,13 @@ const Heading = styled.h3`
 
 const Description = styled.p`
   font-size: 1rem;
-  color: #495057;
+  color: rgb(64, 91, 118);
   line-height: 1.8;
   margin-bottom: 30px;
 `;
 
 const Button = styled.button`
-  background-color: #0056d2;
+  background-color: teal;
   color: white;
   padding: 10px 20px;
   font-size: 1rem;
@@ -91,6 +98,7 @@ const Button = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #003d99;
+      background-color:rgb(16, 67, 75);
+    color:yellow;
   }
 `;

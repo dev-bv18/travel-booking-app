@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef,useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@apollo/client";
 import styled from "styled-components";
+import { GET_PACKAGES } from "../graphql/queries";
 import image from "../assests/img1.avif";
 import img2 from "../assests/img2.jpg";
 import img3 from "../assests/img3.webp";
@@ -8,10 +10,15 @@ import img4 from "../assests/img4.webp";
 import banner from "../assests/banner1.webp";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
+import LoadingScreen from "./LoadingScreen";
+
+const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 function HomePage() {
   const navigate = useNavigate();
   const contactSectionRef = useRef(null);
+  const { data, loading, error } = useQuery(GET_PACKAGES);
+  const [images, setImages] = useState({});
   const handleStartBooking = () => navigate("/booking");
   const handleTravelPackageBrowsing = () => navigate("/booking");
   const handleSecurity = () => navigate("/secure");
@@ -25,6 +32,34 @@ function HomePage() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (!data?.getPackages) return; // Only run if packages are available
+      const newImages = {};
+
+      for (const pkg of data.getPackages) {
+        if (!images[pkg.destination]) {
+          try {
+            const response = await fetch(
+              `https://api.unsplash.com/search/photos?query=${pkg.destination}&per_page=1&client_id=${UNSPLASH_ACCESS_KEY}`
+            );
+            const result = await response.json();
+            newImages[pkg.destination] =
+              result.results[0]?.urls?.regular || banner; // Fallback image
+          } catch (err) {
+            console.error(`Error fetching image for ${pkg.destination}:`, err);
+            newImages[pkg.destination] = banner; // Default fallback image
+          }
+        }
+      }
+      setImages((prev) => ({ ...prev, ...newImages }));
+    };
+
+    fetchImages();
+  }, [data]);
+  const handleBookNow = (pkg) => {
+    navigate("/confirm-booking", { state: { packageDetails: pkg } }); 
+  };
   return (
     <div>
       <Container>
@@ -103,8 +138,31 @@ function HomePage() {
                 </Card>
               </CardContainer>
             </PackagesSection>
+        {/* Latest Travel Packages Section */}
+        <LatestPackagesSection>
+          <SectionHeading>Latest Travel Packages</SectionHeading>
+          <PackageCardContainer>
+            {data.getPackages.slice(-3).map((pkg) => (
+              <Card key={pkg.id}>
+                <PackageImage
+                  src={images[pkg.destination] || banner} // Fallback image if not loaded
+                  alt={pkg.destination}
+                />
+                <CardContent>
+                  <CardTitle>{pkg.title}</CardTitle>
+                  <CardDescription>Destination: {pkg.destination}</CardDescription>
+                  <CardDescription id="price"><strike>₹{pkg.price+(pkg.price*0.50)}</strike> ₹{pkg.price} </CardDescription>
+                  <CardDescription>{pkg.duration} itenary</CardDescription>
+                  <BookButton onClick={() => handleBookNow(pkg)}>Book Now</BookButton>
+                </CardContent>
+              </Card>
+            ))}
+            <Card><CardContent><p id="explore">Explore More ➤</p></CardContent></Card>
+          </PackageCardContainer>
+        </LatestPackagesSection>
 
             {/* Contact Section */}
+            
             <ContactSection ref={contactSectionRef}>
             <FormWrapper>
               <ContactHeading>Get in touch</ContactHeading>
@@ -161,6 +219,46 @@ function HomePage() {
 
 export default HomePage;
 // Styled Components (unchanged except for `AnimationContainer`)
+const LatestPackagesSection = styled.div`
+  padding: 10px 20px;
+  text-align: center;
+`;
+const PackageCardContainer=styled.div`
+display:flex;
+flex-direction:row;
+gap:20px;
+flex-wrap:wrap;
+#price{
+color:rgb(0, 212, 35);}
+p{
+padding:0px;
+margin:2px;}
+#price strike{
+color:black;}
+`;
+const PackageImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+const SectionHeading = styled.h2`
+  font-size: 2rem;
+  color:teal;
+  margin-bottom: 30px;
+`;
+const BookButton = styled.button`
+  background: teal;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background: darkcyan;
+    color: yellow;
+  }
+`;
 
 const AnimationOverlay = styled.div`
   position: fixed;
@@ -557,6 +655,13 @@ const CardImage = styled.img`
 
 const CardContent = styled.div`
   padding: 20px;
+  #explore{
+  text-align:center;
+  position:relative;
+  color:white;
+  font-weight:600;
+  top:165px;
+  }
 `;
 
 const CardTitle = styled.h3`

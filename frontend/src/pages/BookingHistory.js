@@ -68,7 +68,7 @@ const BookingHistory = () => {
   }
 
   const bookingHistory = data?.getBookingHistory || [];
-
+ console.log(bookingHistory[0]);
   return (
     <div>
       <Navbar />
@@ -91,6 +91,8 @@ const BookingHistory = () => {
                 <p>
                   <strong>Booking Date:</strong> {booking.date}
                 </p>
+                <p>{booking.status}</p>
+                <p>₹{booking.package.price}</p>
                 <p id="status">
                   {booking.status + (booking.status === 'Confirmed' ? ' ✅' : ' ❌')}
                 </p>

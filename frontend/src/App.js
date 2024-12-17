@@ -12,6 +12,8 @@ import styled from "styled-components";
 import BookingHistory from './pages/BookingHistory';
 import Booking from './pages/Booking';
 import AdminDashboard from './pages/AdminDashBoard';
+import SecureContent from './components/SecureContent';
+import UpdateContent from './components/UpdateContent';
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
           <Route path="/booking-history" element={<BookingHistory />} />
           <Route path="/admin" element={<AdminDashboard/>}/>
           <Route path="/confirm-booking" element={<ConfirmBooking />} />
+          <Route path="/secure" element={<SecureContent/>}/>
+          <Route path="/update" element={<UpdateContent/>}/>
 
                   </Routes>
         </AppContainer>

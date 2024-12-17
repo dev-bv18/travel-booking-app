@@ -21,6 +21,8 @@ export const GET_BOOKING_HISTORY = gql`
       package {
         title
         destination
+        price
+        duration
       }
       date
       status
