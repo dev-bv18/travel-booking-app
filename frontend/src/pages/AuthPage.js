@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import NavBar from './NavBar';
 import {jwtDecode} from 'jwt-decode';
 import Footer from './Footer';
-import bgImage from '../assests/login.gif'; // Ensure the path to your background image is correct.
+import bgImage from '../assests/login.gif'; 
 
 const AuthPage = () => {
   const [form, setForm] = useState({ username: '', email: '', password: '', role: 'user' });
@@ -33,10 +33,12 @@ const AuthPage = () => {
         const token = data?.loginUser;
         if (token) {
           const decoded = jwtDecode(token);
+          console.log(decoded.username);
           localStorage.setItem('auth-token', token);
           localStorage.setItem('user-id', decoded.id);
           localStorage.setItem('email', form.email);
-          alert('Login successful!');
+          localStorage.setItem('username',decoded.username);
+         
           navigate('/');
         } else {
           throw new Error('Invalid login response');

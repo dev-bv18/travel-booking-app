@@ -234,8 +234,6 @@ const IntroContainer = styled.div`
     }
   }
 `;
-
-// Other existing styled components remain unchanged
 const FormWrapper = styled.div`
   flex: 1;
   max-width: 700px;
@@ -536,15 +534,17 @@ const Card = styled.div`
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  cursor:pointer;
   width: 300px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background:teal;
 
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 
     h3 {
-      color:rgb(25, 87, 99);
+      color:yellow;
     }
   }
 `;
@@ -561,7 +561,7 @@ const CardContent = styled.div`
 
 const CardTitle = styled.h3`
   font-size: 1.1rem;
-  color: #212529;
+  color:rgb(255, 255, 255);
   font-weight: bold;
   margin-bottom: 10px;
   transition: color 0.3s ease;
@@ -569,7 +569,7 @@ const CardTitle = styled.h3`
 
 const CardDescription = styled.p`
   font-size: 0.9rem;
-  color: #495057;
+  color:rgb(161, 203, 190);
   line-height: 1.5;
 `;
 

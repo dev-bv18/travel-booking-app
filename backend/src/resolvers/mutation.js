@@ -35,7 +35,7 @@ module.exports = {
             throw new AuthenticationError('Error Signing in');
         }
 
-        return jwt.sign({ id: user._id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return jwt.sign({ id: user._id, role: user.role, email: user.email,username:user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
     },
 
     // Book a travel package (auth required)

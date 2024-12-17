@@ -6,19 +6,22 @@ import './NavBar.css';
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null); 
+  const [userId, setUserId] = useState(null);
+  const [username,setUsername]=useState(null);
   const [email,setEmail]=useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('auth-token');
     const storedUserId = localStorage.getItem('user-id');
-    const storesEmail=localStorage.getItem('email');  // Retrieve user-id from localStorage
+    const storesEmail=localStorage.getItem('email'); 
+    const storedUsername=localStorage.getItem('username'); // Retrieve user-id from localStorage
 
     if (token && storedUserId && storesEmail) {
       setIsLoggedIn(true);
       setUserId(storedUserId);
       setEmail(storesEmail);
+      setUsername(storedUsername);
     } else {
       setIsLoggedIn(false);
     }
@@ -29,6 +32,7 @@ const NavBar = () => {
     localStorage.removeItem('user-id');
     setIsLoggedIn(false);
     setUserId(null);
+    setUsername(null);
     navigate('/auth'); // Redirect to login page after logout
   };
 
@@ -42,7 +46,7 @@ const NavBar = () => {
         {isLoggedIn ? (
           <>
             <Link to="/booking-history" className="nav-link">
-            <span className="nav-link">{email}</span></Link>
+            <span className="nav-link">{username}</span></Link>
             <button onClick={handleLogout} className="logout-button">Logout</button>
           </>
         ) : (

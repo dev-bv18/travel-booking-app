@@ -39,6 +39,7 @@
 }
 .logout-button:hover{
     color:yellow;
+    cursor: pointer;
 }
   
   .nav-link{

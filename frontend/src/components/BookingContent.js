@@ -96,6 +96,7 @@ const Card = styled.div`
   overflow: hidden;
   width: 48%; /* Adjust for two cards side by side */
   display: flex;
+  cursor:pointer;
   flex-direction: column;
   transition:all 0.2s ease-in-out;
 
