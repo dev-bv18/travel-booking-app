@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import image from "../assests/img1.avif";
@@ -10,18 +10,8 @@ import NavBar from "./NavBar";
 import Footer from "./Footer";
 
 function HomePage() {
-  const [showAnimation, setShowAnimation] = useState(true); // Initially true to show animation
   const navigate = useNavigate();
   const contactSectionRef = useRef(null);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setShowAnimation(false); // Hide animation after 2 seconds
-    }, 3000);
-
-    return () => clearTimeout(timeout); // Clean up the timeout on component unmount
-  }, []);
-
   const handleStartBooking = () => navigate("/booking");
   const handleTravelPackageBrowsing = () => navigate("/booking");
   const handleSecurity = () => navigate("/secure");
@@ -148,8 +138,8 @@ function HomePage() {
             </FormWrapper>
             <ContactInfo>
               <InfoHeading>Get in touch</InfoHeading>
-              <InfoItem>📧 srpm523@gmail.com</InfoItem>
-              <InfoItem>📍 Bhubaneswar, OD IN</InfoItem>
+              <InfoItem>📧 support@tripify.com</InfoItem>
+              <InfoItem>📍 123 Travel Lane, Wanderlust City</InfoItem>
               <InfoHours>
                 <strong>Hours</strong>
                 <p>Monday: 9:00am – 10:00pm</p>

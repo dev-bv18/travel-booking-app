@@ -17,8 +17,8 @@ const PackagesPage = () => {
   useEffect(() => {
     if (!loading) {
       const timeout = setTimeout(() => {
-        setShowContent(true); // Show content after 2 seconds
-      }, 2000);
+        setShowContent(true);    
+      }, 1500);
 
       return () => clearTimeout(timeout); // Clean up timeout if the component is unmounted
     }
@@ -59,7 +59,7 @@ const PackagesPage = () => {
         <Navbar />
         <LoadingScreen />
       </div>
-    ); // Show loading screen until content is ready
+    ); 
   if (error) return <p>Error: {error.message}</p>;
 
   return (

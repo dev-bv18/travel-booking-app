@@ -7,7 +7,7 @@ import './NavBar.css';
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null); 
-  const [email,setEmail]=useState(null);// This should reference userId
+  const [email,setEmail]=useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
