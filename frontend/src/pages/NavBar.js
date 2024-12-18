@@ -59,6 +59,9 @@ const NavBar = () => {
         <Link to="/" className="nav-link">
           Home
         </Link>
+        <Link to="/aboutus" className="nav-link">
+          About Us
+        </Link>
         <Link to="/packages" className="nav-link">
           Explore
         </Link>
