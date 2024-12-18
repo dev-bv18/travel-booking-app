@@ -129,6 +129,7 @@ const ConfirmBooking = () => {
           </Terms>
 
           <button type="submit">Pay ₹{totalPrice} and Confirm Booking</button>
+          <button id="later"> Pay Later</button>
         </Form>
       </Container>
       <Footer />
@@ -205,7 +206,10 @@ const Form = styled.form`
       border-radius: 5px;
       flex: 1;
     }
+      
   }
+    button#later{
+    background:grey;}
 
   button {
     padding: 10px;
