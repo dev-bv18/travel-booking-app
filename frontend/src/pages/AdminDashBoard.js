@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_PACKAGES } from '../graphql/queries';
 import styled from 'styled-components';
@@ -9,7 +9,9 @@ import EditPackageList from './EditPackageList';
 
 const AdminDashboard = () => {
   const { data: packageData, loading: packageLoading } = useQuery(GET_PACKAGES);
-
+ useEffect(() => {
+    window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
+  }, []);
   const [activeForm, setActiveForm] = useState(null); // Track which form is active
 
   const totalPackages = packageData?.getPackages.length || 0;

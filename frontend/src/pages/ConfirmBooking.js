@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import styled from "styled-components";
@@ -9,7 +9,9 @@ import Footer from "./Footer";
 const ConfirmBooking = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-
+ useEffect(() => {
+    window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
+  }, []);
   const [bookPackage] = useMutation(BOOK_PACKAGE); // Apollo mutation hook
 
   const [formData, setFormData] = useState({

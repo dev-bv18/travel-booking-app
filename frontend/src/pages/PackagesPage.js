@@ -1,7 +1,7 @@
 // src/pages/PackagesPage.js
 
 import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_PACKAGES } from '../graphql/queries';
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
@@ -12,8 +12,7 @@ import Footer from './Footer';
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 const PackagesPage = () => {
-  const { loading, error, data, refetch } = useQuery(GET_PACKAGES);
-  //const [bookPackage] = useMutation(BOOK_PACKAGE);
+  const { loading, error, data } = useQuery(GET_PACKAGES);
   const [images, setImages] = useState({});
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();

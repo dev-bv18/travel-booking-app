@@ -40,6 +40,7 @@ const NavBar = () => {
     setIsLoggedIn(false);
     setUserId(null);
     setUsername(null);
+    
     navigate("/auth"); 
   };
 
@@ -58,10 +59,13 @@ const NavBar = () => {
         <Link to="/" className="nav-link">
           Home
         </Link>
+        <Link to="/packages" className="nav-link">
+          Explore
+        </Link>
         {isLoggedIn ? (
           <div className="dropdown">
             <span className="nav-link dropdown-toggle" onClick={toggleDropdown}>
-              {username} <img src={`https://avatar.iran.liara.run/username?username=${username}`}/>
+              {username} <img src={`https://avatar.iran.liara.run/username?username=${username}`} alt="user-profile"/>
             </span>
             
             {showDropdown && (
