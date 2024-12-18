@@ -10,7 +10,7 @@ import img4 from "../assests/img4.webp";
 import banner from "../assests/banner1.webp";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import LoadingScreen from "./LoadingScreen";
+import Empty from "./Empty";
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 function HomePage() {
@@ -66,7 +66,7 @@ function HomePage() {
   };
     // Show loading or error messages
    if (loading) return;
-   if (error) return <p>Error: {error.message}</p>;
+   if (error) return <Empty/>;
  
   return (
     <div>
