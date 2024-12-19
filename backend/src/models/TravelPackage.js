@@ -6,7 +6,7 @@ const TravelPackageSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     duration: { type: String, required: true },
     destination: { type: String, required: true },
-    availability: { type: Number, required: true },
+    availability: { type: Number,default:0,required: true },
 });
 
 module.exports = mongoose.model('TravelPackage', TravelPackageSchema);
