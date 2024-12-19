@@ -10,13 +10,13 @@ padding: 20px;
 `;
 
 const AboutUs = () => {
-return (
-  <PageContainer>
+return (<div>
+   <PageContainer>
     <Navbar />
     <Container>
       <AbouUsContainer>
           <h1>About Us</h1>
-    <p>Welcome to <strong>Tripify</strong>, your trusted partner in exploring the world!</p>
+    <p>Welcome to <strong>Tripify</strong>, your trusted partner in exploring the world! &#9992;</p>
 
     <p>We believe that every journey tells a story, and our mission is to make your travel dreams come true with ease, affordability, and convenience. Whether you’re planning a weekend getaway, a family vacation, or an adventure of a lifetime, we’re here to help you every step of the way.</p>
 
@@ -33,14 +33,17 @@ return (
     <p>Start planning your next adventure with us today and let’s turn your travel aspirations into reality!</p>
     </AbouUsContainer>
     </Container>
-    <Footer />
-  </PageContainer>
+  
+  </PageContainer>  <Footer />
+</div>
+ 
 );
 };
 export default AboutUs;
 const Container=styled.div`
 margin:20px;
 margin-top:80px;
+padding:30px;
 background:teal;
 border-radius:30px;
 box-shadow:2px 2px 10px rgba(0, 0, 0, 0.21);
