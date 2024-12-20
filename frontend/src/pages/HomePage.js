@@ -10,7 +10,7 @@ import img4 from "../assests/img4.webp";
 import banner from "../assests/banner1.webp";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import LoadingScreen from "./LoadingScreen";
+import Empty from "./Empty";
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 function HomePage() {
@@ -66,7 +66,7 @@ function HomePage() {
   };
     // Show loading or error messages
    if (loading) return;
-   if (error) return <p>Error: {error.message}</p>;
+   if (error) return <Empty/>;
  
   return (
     <div>
@@ -85,7 +85,7 @@ function HomePage() {
             </Content>
             <MainContent>
               <TextSection>
-                <SmallHeading>Explore With Ease</SmallHeading>
+                <SmallHeading>Explore With Ease &#9992;</SmallHeading>
                 <ContentHeading>Your journey starts here</ContentHeading>
                 <ExtendedDescription>
                 Discover a world of convenience and endless possibilities with
@@ -107,7 +107,7 @@ function HomePage() {
               </ImageSection>
             </MainContent>
             <PackagesSection>
-              <Heading>Explore Travel Packages</Heading>
+              <Heading>Explore Travel Packages &#9992;</Heading>
               <SubHeading>Browse and book your perfect getaway.</SubHeading>
               <CardContainer>
                 <Card onClick={handleTravelPackageBrowsing}>
@@ -161,11 +161,11 @@ function HomePage() {
                  <CardDescription>{pkg.description}</CardDescription>
                   <CardDescription id="price"><strike>₹{pkg.price+(pkg.price*0.50)}</strike> ₹{pkg.price} </CardDescription>
                   <CardDescription>{pkg.duration} itenary</CardDescription>
-                  <BookButton onClick={() => handleBookNow(pkg)}>Book Now</BookButton>
+                  <BookButton onClick={() => handleBookNow(pkg)}>Book Now &#9992;</BookButton>
                 </CardContent>
               </Card>
             ))}
-            <Card onClick={showmore}><CardContent><p id="explore">Explore More ➤</p></CardContent></Card>
+            <Card onClick={showmore}><CardContent><p id="explore">Explore More &#9992;</p></CardContent></Card>
           </PackageCardContainer>
         </LatestPackagesSection>
 
@@ -203,7 +203,7 @@ function HomePage() {
               </Form>
             </FormWrapper>
             <ContactInfo>
-              <InfoHeading>Contact us</InfoHeading>
+              <InfoHeading>Contact us &#9992;</InfoHeading>
               <InfoItem>📧 support@tripify.com</InfoItem>
               <InfoItem>📍 123 Travel Lane, Wanderlust City</InfoItem>
               <InfoHours>

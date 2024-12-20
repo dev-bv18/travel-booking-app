@@ -36,7 +36,8 @@ module.exports = gql`
     type Mutation {
         registerUser(username: String!, email: String!, password: String!, role: String): User
         loginUser(email: String!, password: String!): String
-        bookPackage(packageId: ID!, userId: ID!, date: String!): Booking
+        bookPackage(packageId: ID!, userId: ID!, date: String!,status:String!): Booking
+        deleteTravelPackage(id:ID!):TravelPackage
         addTravelPackage(title: String!, description: String!, price: Float!, duration: String!, destination: String!, availability: Int!): TravelPackage
          updateTravelPackage(
       id: ID!

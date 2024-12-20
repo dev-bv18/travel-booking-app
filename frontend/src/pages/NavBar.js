@@ -62,6 +62,10 @@ const NavBar = () => {
         <Link to="/packages" className="nav-link">
           Explore
         </Link>
+        <Link to="/aboutus" className="nav-link">
+          About Us
+        </Link>
+       
         {isLoggedIn ? (
           <div className="dropdown">
             <span className="nav-link dropdown-toggle" onClick={toggleDropdown}>

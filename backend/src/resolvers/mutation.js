@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const { AuthenticationError } = require('apollo-server-express');
 
 module.exports = {
-    // Register User and Generate JWT
     registerUser: async (parent, { username, email, password, role }, { models }) => {
         email = email.trim().toLowerCase();
         const hashed = await bcrypt.hash(password, 10);
@@ -21,7 +20,6 @@ module.exports = {
         }
     },
 
-    // Login User and Generate JWT
     loginUser: async (parent, { email, password }, { models }) => {
         email = email.trim().toLowerCase();
 
@@ -35,11 +33,9 @@ module.exports = {
             throw new AuthenticationError('Error Signing in');
         }
 
-        return jwt.sign({ id: user._id, role: user.role, email: user.email,username:user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return jwt.sign({ id: user._id, role: user.role, email: user.email,username:user.username }, process.env.JWT_SECRET, { expiresIn: '2h' });
     },
-
-    // Book a travel package (auth required)
-    bookPackage: async (parent, { packageId, userId, date }, { models, user }) => {
+    bookPackage: async (parent, { packageId, userId, date,status}, { models, user }) => {
         const finalUserId = userId || user.id;          
        const User=await models.User.findById(userId);
        console.log(User);
@@ -55,23 +51,22 @@ module.exports = {
         if (travelPackage.availability <= 0) {
           throw new Error('No availability for this package');
         }
-      
         const booking = await models.Booking.create({
           package: travelPackage,
           user: User,
           date,
-          status: 'Confirmed',
+          status: status || 'Confirmed',
         });
       
         travelPackage.availability -= 1;
         await travelPackage.save();
+        User.bookings.push(booking);
+        await User.save();
       
         return booking.populate('package');
       },
       
-
-    // Admin-only mutation to add a new travel package
-    addTravelPackage: async (_, { title, description, price, duration, destination, availability }, { models, user }) => {
+  addTravelPackage: async (_, { title, description, price, duration, destination, availability }, { models, user }) => {
         if (user.role !== 'admin') {
             throw new Error('Unauthorized: Only admins can add travel packages');
         }
@@ -88,8 +83,26 @@ module.exports = {
         await newPackage.save();
         return newPackage;
     },
+    deleteTravelPackage:async(_,{id},{models,user})=>{
+      if (!user || user.role !== 'admin') {
+        throw new Error('Unauthorized: Only admins can delete travel packages');
+      }
+      try{
+    
+        const deletePackage = await models.TravelPackage.findByIdAndDelete(id);
+        if (!deletePackage) {
+          throw new Error('Travel package not found or already deleted');
+        }
+    
+        return deletePackage;
+      }
+      catch (error) {
+        console.error('Error deleting package:', error);
+        throw new Error('Failed to delete package.');
+      }
+    },
     updateTravelPackage: async (_, { id, title, description, price, duration, destination, availability }, { models, user }) => {
-        // Ensure only an admin can update the package
+       
         if (!user || user.role !== 'admin') {
           throw new Error('Unauthorized: Only admins can update travel packages');
         }
