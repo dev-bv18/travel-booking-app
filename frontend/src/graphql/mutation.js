@@ -24,6 +24,10 @@ export const ADD_TRAVEL_PACKAGE = gql`
       id
       title
       destination
+      description
+      price
+      duration
+      availability
     }
   }
 `;
@@ -60,7 +64,7 @@ export const UPDATE_PACKAGE = gql`
 export const DELETE_PACKAGE = gql`
   mutation DeleteTravelPackage($id:ID!) {
     deleteTravelPackage(id: $id){
-   id
+      id
       title
       description
       price
@@ -75,11 +79,33 @@ export const BOOK_PACKAGE = gql`
     bookPackage(packageId: $packageId, userId: $userId, date: $date,status:$status) {
       id
       package {
-        title
-        destination
+      title
+      description
+      price
+      duration
+      destination
+      availability
       }
       date
       status
+    }
+  }
+`;
+export const UPDATE_BOOKING_STATUS = gql`
+  mutation UpdateBookingStatus($bookingId: ID!, $status: String!) {
+    updateBookingStatus(bookingId: $bookingId, status: $status) {
+      id
+      status
+      package {
+      id
+      title
+      description
+      price
+      duration
+      destination
+      availability
+      }
+      date
     }
   }
 `;

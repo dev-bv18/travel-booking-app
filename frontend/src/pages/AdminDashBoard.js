@@ -28,7 +28,7 @@ const AdminDashboard = () => {
     <div>
       <NavBar />
       <DashboardContainer>
-        <Heading>Admin Dashboard</Heading>
+        <Heading>Admin Dashboard &#9992;</Heading>
         <CardsContainer>
           {/* Users Card */}
           <Card>
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
           </Card>
 
           <Card onClick={() => toggleForm('edit')}>
-            <CardTitle>Edit Packages</CardTitle>
+            <CardTitle>Packages</CardTitle>
             {packageLoading ? (
               <CardValue>Loading...</CardValue>
             ) : (

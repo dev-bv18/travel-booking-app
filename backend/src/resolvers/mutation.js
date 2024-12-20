@@ -65,6 +65,21 @@ module.exports = {
       
         return booking.populate('package');
       },
+      updateBookingStatus: async (_, { bookingId, status }, { models }) => {
+        const booking = await models.Booking.findById(bookingId);
+        if (!booking) {
+          throw new Error('Booking not found');
+        }
+      
+        booking.status = status;
+        await booking.save();
+      
+        // Populate the package field before returning the booking
+        await booking.populate('package');
+      
+        return booking;
+      }      
+,      
       
   addTravelPackage: async (_, { title, description, price, duration, destination, availability }, { models, user }) => {
         if (user.role !== 'admin') {

@@ -257,9 +257,11 @@ const PackageImage = styled.img`
   object-fit: cover;
 `;
 const SectionHeading = styled.h2`
-  font-size: 2rem;
-  color:teal;
-  margin-bottom: 30px;
+   font-size: 2rem;
+  color: #212529;
+  font-weight: 600;
+  margin-bottom: 20px;
+ 
 `;
 const BookButton = styled.button`
   background: teal;

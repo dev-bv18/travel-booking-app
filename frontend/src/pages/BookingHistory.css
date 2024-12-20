@@ -7,10 +7,19 @@
     padding-top: 80px;
     min-height: 100vh; /* Ensure the background covers the entire viewport */
   }
-  
-  .booking-history h1 {
+   .booking-history h3{
     color: teal;
-    font-size: 40px;
+    text-align: left;
+    padding-left: 47px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+   }
+  .booking-history h1 {
+    color: #212529;
+    font-size: 2rem;
+    padding-left: 45px;
+    text-align: left;
     margin-bottom: 30px;
   }
  .bookings-list{
@@ -26,6 +35,7 @@
     padding: 30px;
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
+    cursor: pointer;
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 20px;
