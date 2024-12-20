@@ -6,6 +6,7 @@ import './BookingHistory.css';
 import LoadingScreen from './LoadingScreen';
 import Empty from './Empty';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
 const BookingHistory = () => {
@@ -18,6 +19,7 @@ const BookingHistory = () => {
       refetch();
     },
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('auth-token');
@@ -36,8 +38,15 @@ const BookingHistory = () => {
     setTimeout(() => setShowLoadingScreen(false), 2000);
   }, []);
   
-
   useEffect(() => {
+    if (error) {
+      alert("The session might have expired. Redirecting...");
+      window.location.href = '/auth';
+    }
+  }, [error]);
+  useEffect(() => {
+   
+  
     if (userId) {
       refetch(); // Refetch data when userId is updated
     }
@@ -65,9 +74,11 @@ const BookingHistory = () => {
     return (
       <div>
         <Navbar />
-        
         <Empty/>
-        <p>Error: {error.message}</p>
+        <div>
+      {error && <p>Error: {error.message}</p>}
+      {/* Other components */}
+    </div>
       </div>
     );
   }
@@ -78,7 +89,8 @@ const BookingHistory = () => {
     <div>
       <Navbar />
       <div className="booking-history">
-        <h1>Your Booking History</h1>
+        <h3>Welcome back, {localStorage.getItem('username')} &#9992;</h3>
+        <h1>Your Booking History </h1>
         {bookingHistory.length === 0 ? (
           <div>
          <Empty/>
@@ -88,7 +100,8 @@ const BookingHistory = () => {
          </Link></div>) : (
         <ul className='bookings-list'>
         {bookingHistory.map((booking) => (
-          <li key={booking.id} className="booking-card">
+          <li key={booking.id} className="booking-card" 
+          onClick={() =>navigate(`/booking-details/${booking.id}`,{state:booking})}>
             {booking.package ? (
               <>
                 <h2>{booking.package.title}</h2>

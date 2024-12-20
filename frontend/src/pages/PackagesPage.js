@@ -80,7 +80,8 @@ const PackagesPage = () => {
           <div className="right-banner">Flat 50% off!</div>
         </div>
         <Content>
-          <Heading>Available Travel Packages</Heading>
+          <SubHeading>Travel with us and explore the world &#9992;</SubHeading>
+          <Heading>Available Travel Packages </Heading>
           <PackagesContainer>
             {data.getPackages.map((pkg) => (
               <PackageCard
@@ -121,17 +122,23 @@ const PackagesPage = () => {
 
 export default PackagesPage;
 
+const SubHeading = styled.h2`
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color:teal;
+`;
 const PageContainer = styled.div`
   padding: 60px 20px;
   max-width: 1200px;
   margin: 0 auto;
 `;
 const Heading = styled.h1`
-  font-size: 2.5rem;
-  color: teal;
-  font-weight: bold;
-  margin-bottom: 40px;
-  text-align: center;
+  font-size: 2rem;
+  color:#212529;
+  font-weight:bolder;
+  margin-bottom: 30px;
+  text-align: left;
 `;
 
 const PackagesContainer = styled.div`

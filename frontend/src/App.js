@@ -16,6 +16,7 @@ import SecureContent from './components/SecureContent';
 import UpdateContent from './components/UpdateContent';
 import PaymentForm from './pages/PaymentForm';
 import AboutUs from './pages/AboutUs';
+import BookingDetails from './pages/BookingDetails';
 const App = () => {
   return (
     <ApolloWrapper>
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/update" element={<UpdateContent/>}/>
           <Route path="/payment" element={<PaymentForm />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
+          <Route path="/booking-details/:id" element={<BookingDetails />} />
                   </Routes>
         </AppContainer>
        
