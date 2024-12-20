@@ -142,14 +142,14 @@ const PackagesContainer = styled.div`
 `;
 const PackageCard = styled.div`
   background: linear-gradient(-90deg,
-    rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.47),
+    rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.61),
     rgba(0, 0, 0, 0.79) 
   ), url(${(props) => props.backgroundimage});
   background-size: cover;
   background-position: center;
   border-radius: 10px;
   overflow: hidden;
-  width: 40%;
+  width: 49%;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;

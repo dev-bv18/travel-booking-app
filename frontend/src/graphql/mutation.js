@@ -57,9 +57,22 @@ export const UPDATE_PACKAGE = gql`
   }
 `;
 
+export const DELETE_PACKAGE = gql`
+  mutation DeleteTravelPackage($id:ID!) {
+    deleteTravelPackage(id: $id){
+   id
+      title
+      description
+      price
+      duration
+      destination
+      availability
+      }
+  }
+`;
 export const BOOK_PACKAGE = gql`
-  mutation BookPackage($packageId: ID!, $userId: ID!, $date: String!) {
-    bookPackage(packageId: $packageId, userId: $userId, date: $date) {
+  mutation BookPackage($packageId: ID!, $userId: ID!, $date: String!,$status:String!) {
+    bookPackage(packageId: $packageId, userId: $userId, date: $date,status:$status) {
       id
       package {
         title

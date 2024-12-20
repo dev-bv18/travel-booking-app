@@ -21,8 +21,11 @@ module.exports=
         }
   
         try {
-          const bookings = await models.Booking.find({ user: userId }).populate('package');
-          return bookings;
+          const bookings = await models.Booking.find({ user: userId })
+      .populate('package')
+      .then(bookings => bookings.filter(booking => booking.package != null)); 
+
+    return bookings;
         } catch (err) {
           console.error('Error fetching booking history:', err);
           throw new Error('Unable to fetch booking history');

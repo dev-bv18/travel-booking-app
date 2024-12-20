@@ -12,7 +12,7 @@ const ConfirmBooking = () => {
  useEffect(() => {
     window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
   }, []);
-  const [bookPackage] = useMutation(BOOK_PACKAGE); // Apollo mutation hook
+  const [bookPackage] = useMutation(BOOK_PACKAGE);
 
   const [formData, setFormData] = useState({
     name: localStorage.getItem("username") || "",
@@ -28,6 +28,38 @@ const ConfirmBooking = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handlePayLater = async (e) => {
+    e.preventDefault();
+    const userId = localStorage.getItem("user-id");
+    if (!userId) {
+      alert("You must be logged in to confirm booking.");
+      navigate("/auth");
+      return;
+    }
+  
+    try {
+      // Call the BOOK_PACKAGE mutation with "Pending" status
+      const { data } = await bookPackage({
+        variables: {
+          packageId: state.packageDetails.id, // Package ID from state
+          userId,
+          date: formData.date,
+          status: "Pending", // Set status as "Pending"
+        },
+      });
+  
+      if (data?.bookPackage) {
+        alert(`Your booking for "${state.packageDetails.title}" has been saved as pending.`);
+        navigate("/booking-history");
+      } else {
+        alert("Failed to save booking. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error saving booking:", err);
+      alert("An error occurred while saving the booking.");
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = localStorage.getItem("user-id");
@@ -44,6 +76,7 @@ const ConfirmBooking = () => {
           packageId: state.packageDetails.id, // Package ID from state
           userId,
           date: formData.date,
+          status:"Confirmed",
         },
       });
 
@@ -129,6 +162,7 @@ const ConfirmBooking = () => {
           </Terms>
 
           <button type="submit">Pay ₹{totalPrice} and Confirm Booking</button>
+          <button id="later" onClick={handlePayLater}> Pay Later</button>
         </Form>
       </Container>
       <Footer />
@@ -205,7 +239,10 @@ const Form = styled.form`
       border-radius: 5px;
       flex: 1;
     }
+      
   }
+    button#later{
+    background:grey;}
 
   button {
     padding: 10px;
