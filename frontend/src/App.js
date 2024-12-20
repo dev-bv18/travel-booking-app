@@ -14,6 +14,7 @@ import Booking from './pages/Booking';
 import AdminDashboard from './pages/AdminDashBoard';
 import SecureContent from './components/SecureContent';
 import UpdateContent from './components/UpdateContent';
+import PaymentForm from './pages/PaymentForm';
 import AboutUs from './pages/AboutUs';
 const App = () => {
   return (
@@ -31,8 +32,8 @@ const App = () => {
           <Route path="/confirm-booking" element={<ConfirmBooking />} />
           <Route path="/secure" element={<SecureContent/>}/>
           <Route path="/update" element={<UpdateContent/>}/>
-          <Route path="/aboutus" element={<AboutUs/>}></Route>
-
+          <Route path="/payment" element={<PaymentForm />} />
+          <Route path="/aboutus" element={<AboutUs/>}/>
                   </Routes>
         </AppContainer>
        
