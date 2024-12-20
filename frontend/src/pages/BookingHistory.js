@@ -14,6 +14,9 @@ const BookingHistory = () => {
   const { loading, error, data, refetch } = useQuery(GET_BOOKING_HISTORY, {
     variables: { userId },
     skip: !userId,
+    onError: () => {
+      refetch();
+    },
   });
 
   useEffect(() => {
@@ -62,6 +65,8 @@ const BookingHistory = () => {
     return (
       <div>
         <Navbar />
+        
+        <Empty/>
         <p>Error: {error.message}</p>
       </div>
     );
@@ -81,9 +86,11 @@ const BookingHistory = () => {
          <Link to="/packages">
           <p id="start">Start Booking!</p>
          </Link></div>) : (
-          <ul className='bookings-list'>
-            {bookingHistory.map((booking) => (
-              <li key={booking.id} className="booking-card">
+        <ul className='bookings-list'>
+        {bookingHistory.map((booking) => (
+          <li key={booking.id} className="booking-card">
+            {booking.package ? (
+              <>
                 <h2>{booking.package.title}</h2>
                 <p>
                   <strong>Destination:</strong> {booking.package.destination}
@@ -95,9 +102,14 @@ const BookingHistory = () => {
                 <p id="status">
                   {booking.status + (booking.status === 'Confirmed' ? ' ✅' : ' ❌')}
                 </p>
-              </li>
-            ))}
-          </ul>
+              </>
+            ) : (
+              <p>Package information is unavailable.</p>
+            )}
+          </li>
+        ))}
+      </ul>
+      
         )}
       </div>
       <Footer/>

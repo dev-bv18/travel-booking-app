@@ -9,7 +9,7 @@ const Footer = () => {
           <h3>About Tripify</h3>
           <p>
             Discover the world with Tripify, your one-stop destination for curated travel experiences.
-            Explore, book, and enjoy your journey with ease!
+            Explore, book, and enjoy your journey with ease! &#9992;
           </p>
         </div>
         <div className="footer-section links">
@@ -19,6 +19,7 @@ const Footer = () => {
             <li><a href="/AboutUs">About Us</a></li>
             <li><a href="/packages">Packages</a></li>
              <li><a href="/booking-history">Booking History</a></li>
+             <li><a href="/aboutus">About Us</a></li>
           </ul>
         </div>
         <div className="footer-section contact">

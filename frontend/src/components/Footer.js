@@ -14,8 +14,8 @@ const BookingFooter = () => {
     <FooterContainer>
       <FooterContent>
         <FooterHeading>GET IN TOUCH</FooterHeading>
-        <FooterSubHeading>Start your travel journey today!</FooterSubHeading>
-        <FooterButton onClick={handleGetInTouch}>GET IN TOUCH</FooterButton>
+        <FooterSubHeading>Start your travel journey today! &#9992;</FooterSubHeading>
+        <FooterButton onClick={handleGetInTouch}>CONTACT NOW</FooterButton>
       </FooterContent>
       <FooterLinks>
         <FooterLink href="#">Schedule Appointment</FooterLink>

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_PACKAGES } from '../graphql/queries';
-import { UPDATE_PACKAGE } from '../graphql/mutation';
+import { UPDATE_PACKAGE,DELETE_PACKAGE } from '../graphql/mutation';
 import styled from 'styled-components';
 
 const EditPackageList = ({ onClose }) => {
   const { data, loading, error, refetch } = useQuery(GET_PACKAGES);
   const [updatePackage] = useMutation(UPDATE_PACKAGE);
+  const [deletePackage]=useMutation(DELETE_PACKAGE);
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [formData, setFormData] = useState({});
 
@@ -14,7 +15,21 @@ const EditPackageList = ({ onClose }) => {
     setSelectedPackage(pkg.id);
     setFormData({ ...pkg });
   };
-
+  const handleDeleteClick = async (pkg) => {
+    if (window.confirm('Are you sure you want to delete this package?')) {
+      try {
+        const { data } = await deletePackage({ variables: { id: pkg.id } });
+        if (data.deleteTravelPackage) {
+          alert('Package deleted successfully!');
+          refetch(); // Refresh the list after deletion
+        } else {
+          alert('Failed to delete package. It might have been already deleted.');}
+      } catch (err) {
+        console.error('Error deleting package:', err);
+        alert('Failed to delete package. Please try again.');
+      }
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -53,10 +68,14 @@ const EditPackageList = ({ onClose }) => {
       {data.getPackages.map((pkg) => (
         <PackageItem key={pkg.id}>
           <div>
-            <strong>{pkg.title}</strong> - {pkg.destination}
+            <strong>{pkg.title}</strong> - {pkg.destination} ({pkg.availability} left)
           </div>
+          <ButtonBox>
           <EditButton onClick={() => handleEditClick(pkg)}>Edit</EditButton>
-        </PackageItem>
+          <DeleteButton onClick={() => handleDeleteClick(pkg)}>Delete</DeleteButton>
+       
+          </ButtonBox>
+           </PackageItem>
       ))}
 
       {selectedPackage && (
@@ -128,6 +147,18 @@ const EditPackageList = ({ onClose }) => {
 export default EditPackageList;
 
 // Styled Components
+const DeleteButton = styled.button`
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darkred;
+  }
+`;
 const Container = styled.div`
   padding: 20px;
   background-color: white;
@@ -161,11 +192,14 @@ const CloseButton = styled.button`
 
 const PackageItem = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content:space-between;
   padding: 10px;
   border-bottom: 1px solid #ccc;
 `;
-
+const ButtonBox=styled.div`
+display:flex;
+flex-direction:row;
+gap:3px;`;
 const EditButton = styled.button`
   background-color: teal;
   color: white;
