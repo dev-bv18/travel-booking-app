@@ -12,10 +12,13 @@ import Footer from './Footer';
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 const PackagesPage = () => {
-  const { loading, error, data } = useQuery(GET_PACKAGES);
+  const { loading, error, data, refetch } = useQuery(GET_PACKAGES);
   const [images, setImages] = useState({});
   const [showContent, setShowContent] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
   
   useEffect(() => {
     const preloadImages = async () => {
