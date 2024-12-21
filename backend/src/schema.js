@@ -20,6 +20,13 @@ module.exports = gql`
         bookings: [Booking]
     }
 
+type UserWithBookingCount {
+    id: ID!
+    username: String!
+    email: String!
+    bookingCount: Int!
+}
+
     type Booking {
         id: ID!
         user: User!
@@ -30,6 +37,7 @@ module.exports = gql`
 
     type Query {
         getPackages: [TravelPackage!]
+        getUsersWithBookingCounts: [UserWithBookingCount!]
         getBookingHistory(userId: ID!): [Booking!]
     }
 

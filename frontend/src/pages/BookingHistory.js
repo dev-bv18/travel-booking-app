@@ -5,13 +5,14 @@ import Navbar from './NavBar';
 import './BookingHistory.css';
 import LoadingScreen from './LoadingScreen';
 import Empty from './Empty';
-import { Link } from 'react-router-dom';
+import { Link ,useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
 const BookingHistory = () => {
-  const [userId, setUserId] = useState(null);
-  const [showLoadingScreen, setShowLoadingScreen] = useState(true); // State to control the loading screen visibility
+  const { userId } = useParams(); 
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const [username, setUsername] = useState('');
   const { loading, error, data, refetch } = useQuery(GET_BOOKING_HISTORY, {
     variables: { userId },
     skip: !userId,
@@ -24,6 +25,7 @@ const BookingHistory = () => {
   useEffect(() => {
     const token = localStorage.getItem('auth-token');
     const storedUserId = localStorage.getItem('user-id');
+    const storedUsername = localStorage.getItem('selected-username'); // Get username from localStorage
     console.log(token + " and this " + storedUserId);
 
     if (!token || !storedUserId) {
@@ -32,15 +34,13 @@ const BookingHistory = () => {
       return;
     }
 
-    setUserId(storedUserId);
-
     // Display loading screen for 2 seconds
+    setUsername(storedUsername || 'User');
     setTimeout(() => setShowLoadingScreen(false), 2000);
   }, []);
   
   useEffect(() => {
     if (error) {
-      alert("The session might have expired. Redirecting...");
       window.location.href = '/auth';
     }
   }, [error]);
@@ -89,8 +89,8 @@ const BookingHistory = () => {
     <div>
       <Navbar />
       <div className="booking-history">
-        <h3>Welcome back, {localStorage.getItem('username')} &#9992;</h3>
-        <h1>Your Booking History </h1>
+        <h3>Welcome back &#9992;</h3>
+        <h1>{username}'s Booking History </h1>
         {bookingHistory.length === 0 ? (
           <div>
          <Empty/>
