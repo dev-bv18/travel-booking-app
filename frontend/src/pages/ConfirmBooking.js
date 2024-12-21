@@ -50,7 +50,7 @@ const ConfirmBooking = () => {
   
       if (data?.bookPackage) {
         alert(`Your booking for "${state.packageDetails.title}" has been saved as pending.`);
-        navigate("/booking-history");
+        navigate(`/booking-history/${userId}`);
       } else {
         alert("Failed to save booking. Please try again.");
       }
@@ -82,7 +82,7 @@ const ConfirmBooking = () => {
 
       if (data?.bookPackage) {
         alert(`Booking confirmed for "${state.packageDetails.title}"!`);
-        navigate("/booking-history");
+        navigate(`/booking-history/${userId}`);
       } else {
         alert("Failed to confirm booking. Please try again.");
       }
