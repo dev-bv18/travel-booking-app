@@ -28,7 +28,6 @@ const App = () => {
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/booking" element={<Booking/>}/>
-          <Route path="/booking-history" element={<BookingHistory />} />
           <Route path="/admin" element={<AdminDashboard/>}/>
           <Route path="/confirm-booking" element={<ConfirmBooking />} />
           <Route path="/secure" element={<SecureContent/>}/>
@@ -36,6 +35,7 @@ const App = () => {
           <Route path="/payment" element={<PaymentForm />} />
           <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/booking-details/:id" element={<BookingDetails />} />
+          <Route path="/booking-history/:userId" element={<BookingHistory />} />
                   </Routes>
         </AppContainer>
        

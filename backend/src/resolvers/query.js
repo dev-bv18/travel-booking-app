@@ -9,7 +9,15 @@ module.exports=
           throw new Error('Unable to fetch travel packages');
         }
       },
-  
+      getUsersWithBookingCounts: async (_, __, { models }) => {
+        const users = await models.User.find().populate('bookings');
+        return users.map((user) => ({
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          bookingCount: user.bookings.length,
+        }));
+      },
       // Fetch booking history for a specific user
       getBookingHistory: async (_, { userId }, { models, user }) => {
         if (!user) {
