@@ -76,8 +76,7 @@ const NavBar = () => {
             {showDropdown && (
               <div className="dropdown-menu">
                 <Link to={`/booking-history/${userId}`} className="dropdown-item" onClick={()=>{localStorage.setItem('selected-username', username);
-                  //refresh page 
-                  window.location.href = `/booking-history/${userId}`;
+                  navigate(`/booking-history/${userId}`);
                 }}>
                   Booking History
                 </Link>
