@@ -17,6 +17,7 @@ import UpdateContent from './components/UpdateContent';
 import PaymentForm from './pages/PaymentForm';
 import AboutUs from './pages/AboutUs';
 import BookingDetails from './pages/BookingDetails';
+import PackageDetails from './pages/PackageDetails';
 const App = () => {
   return (
     <ApolloWrapper>
@@ -36,9 +37,10 @@ const App = () => {
           <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/booking-details/:id" element={<BookingDetails />} />
           <Route path="/booking-history/:userId" element={<BookingHistory />} />
+          <Route path="/package-details/:id" element={<PackageDetails />} />
+
                   </Routes>
         </AppContainer>
-       
       </Router> 
     
     </ApolloWrapper>

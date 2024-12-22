@@ -89,7 +89,8 @@ const PackagesPage = () => {
             {data.getPackages.map((pkg) => (
               <PackageCard
                 key={pkg.id}
-                backgroundimage={images[pkg.destination] || 'images/loader.svg'}
+                backgroundimage={images[pkg.destination] || 'images/loader.svg'} 
+                onClick={() => navigate(`/package-details/${pkg.id}`, { state: pkg })}
               >
                 <CardContent>
                   <PackageTitle>{pkg.title}</PackageTitle>
