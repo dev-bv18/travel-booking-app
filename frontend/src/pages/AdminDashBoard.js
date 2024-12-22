@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import NavBar from './NavBar';
 import Footer from './Footer';
 import AddPackageForm from './AddPackageForm';
+import { useNavigate } from "react-router-dom";
 import EditPackageList from './EditPackageList';
 
 const AdminDashboard = () => {
@@ -13,6 +14,7 @@ const AdminDashboard = () => {
  useEffect(() => {
     window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
   }, []);
+  const navigate = useNavigate();
   const [activeForm, setActiveForm] = useState(null);
   const [isUserListVisible, setIsUserListVisible] = useState(false); // State to control user list visibility
 
@@ -30,7 +32,7 @@ const AdminDashboard = () => {
   };
   const navigateToBookingHistory = (userId,username) => {
     localStorage.setItem('selected-username', username);
-    window.location.href = `/booking-history/${userId}`;
+    navigate( `/booking-history/${userId}`);
   };
 
   return (
