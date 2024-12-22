@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Slider from 'react-slick';
 import NavBar from './NavBar';
 import Footer from './Footer';
 import axios from 'axios';
@@ -32,7 +33,7 @@ const PackageDetails = () => {
       });
       const imageUrls = response.data.results.map((img) => img.urls.regular);
       setImages(imageUrls);
-      setBackgroundImage(imageUrls[0]); // Set the first image as the background
+      setBackgroundImage(imageUrls[Math.floor(Math.random() * imageUrls.length)]); // Set a random image as the background
     } catch (error) {
       console.error('Error fetching images from Unsplash:', error);
     }
@@ -40,6 +41,27 @@ const PackageDetails = () => {
 
   const handleBookNow = () => {
     navigate('/confirm-booking', { state: { packageDetails: pkg } });
+  };
+
+  const handleAnotherPackage = () => {
+    navigate('/packages'); // Redirect to packages list
+  };
+//autoscrolling carousel
+  const carouselSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 768, // Adjust for smaller screens
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -50,20 +72,16 @@ const PackageDetails = () => {
         <h1>Package Details</h1>
         <DetailsCard>
           <h2>{pkg?.title || 'Package Unavailable'} ~ {pkg?.destination || 'N/A'}</h2>
+          <p>{pkg?.description}</p>
           <p>
-            {pkg?.description}
+            <strike>₹{pkg?.price + pkg?.price * 0.5}</strike> ₹{pkg?.price || 'N/A'}{' '}
+            <Alert>(Tripify Exclusive!✨)</Alert>
           </p>
-          <p>
-            <strike>₹{pkg?.price+pkg?.price*0.50}</strike> ₹{pkg?.price || 'N/A'} <Alert>(tripify exclusive!✨)</Alert>
-          </p>
-          <p>
-            {pkg?.duration} iternary specially curated for you! 🌟
-          </p>
+          <p>{pkg?.duration} itinerary specially curated for you! 🌟</p>
           <p>
             <strong>Availability:</strong>{' '}
             {pkg?.availability === 0 ? 'Unavailable' : `${pkg?.availability} slots`}
           </p>
-          
           {pkg?.availability === 0 ? (
             <BookButton disabled>Unavailable</BookButton>
           ) : (
@@ -73,27 +91,29 @@ const PackageDetails = () => {
         <ImagesSection>
           <h2>Destination Gallery</h2>
           {images.length > 0 ? (
-            <ImagesContainer>
+            <Carousel {...carouselSettings}>
               {images.map((src, index) => (
                 <ImageWrapper key={index}>
                   <Image
                     src={src}
                     alt="Destination"
-                    style={{
-                      gridRow: `span ${Math.ceil(Math.random() * 2)}`,
-                      gridColumn: `span ${Math.ceil(Math.random() * 2)}`,
-                    }}
                     onClick={() =>
-                      window.open(`https://www.google.com/maps/place/${pkg.destination}`, '_blank')
+                      window.open(
+                        `https://www.google.com/maps/place/${pkg.destination}`,
+                        '_blank'
+                      )
                     }
                   />
                 </ImageWrapper>
               ))}
-            </ImagesContainer>
+            </Carousel>
           ) : (
             <p>Loading images...</p>
           )}
         </ImagesSection>
+        <AnotherPackageButton onClick={handleAnotherPackage}>
+          Check Another Package
+        </AnotherPackageButton>
       </Container>
       <Footer />
     </PageWrapper>
@@ -104,15 +124,13 @@ export default PackageDetails;
 
 // Styled Components
 const Alert = styled.span`
-color:white;
+  color:yellow;
 `;
+
 const PageWrapper = styled.div`
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.67),
-      rgba(0, 0, 0, 0.7)
-    ),
+  background: linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.7)),
     url(${(props) => props.backgroundImage});
   background-size: cover;
   background-position: center;
@@ -137,43 +155,15 @@ const Container = styled.div`
 `;
 
 const DetailsCard = styled.div`
-  background: linear-gradient(
-      -90deg,
-      rgba(0, 0, 0, 0.35),
-      rgba(0, 0, 0, 0.61),
-      rgba(0, 0, 0, 0.79)
-    ),
-    url('https://source.unsplash.com/1600x900/?travel');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.61), rgba(0, 0, 0, 0.79));
   text-align: left;
   color: white;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 1500px;
   margin: 0 auto;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: yellow;
-  }
-
-  p {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    color: rgba(201, 241, 251, 0.9);
-  }
+  h2{
+  color:teal;}
 `;
 
 const BookButton = styled.button`
@@ -184,13 +174,11 @@ const BookButton = styled.button`
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
-
   &:disabled {
     background: rgb(1, 76, 68);
     color: grey;
     cursor: not-allowed;
   }
-
   &:hover:not(:disabled) {
     background: darkcyan;
     color: yellow;
@@ -199,33 +187,44 @@ const BookButton = styled.button`
 
 const ImagesSection = styled.div`
   margin-top: 40px;
-
   h2 {
     color: white;
     margin-bottom: 20px;
   }
 `;
 
-const ImagesContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-auto-rows: 300px;
-  gap: 10px;
+const Carousel = styled(Slider)`
+  .slick-slide img {
+    border-radius: 10px;
+  }
 `;
 
 const ImageWrapper = styled.div`
-  overflow: hidden;
-  border-radius: 10px;
+  padding: 10px;
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 90%;
+  height: 400px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.3s ease;
-
   &:hover {
     transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+  }
+`;
+
+const AnotherPackageButton = styled.button`
+  margin-top: 20px;
+  background: #ff6347;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  &:hover {
+    background: #e5533b;
+    color: white;
   }
 `;
