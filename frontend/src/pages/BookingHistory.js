@@ -40,11 +40,6 @@ const BookingHistory = () => {
   }, []);
   
   useEffect(() => {
-    if (error) {
-      window.location.href = '/auth';
-    }
-  }, [error]);
-  useEffect(() => {
    
   
     if (userId) {

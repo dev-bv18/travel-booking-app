@@ -13,7 +13,8 @@ const AdminDashboard = () => {
  useEffect(() => {
     window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
   }, []);
-  const [activeForm, setActiveForm] = useState(null); // Track which form is active
+  const [activeForm, setActiveForm] = useState(null);
+  const [isUserListVisible, setIsUserListVisible] = useState(false); // State to control user list visibility
 
   const totalPackages = packageData?.getPackages.length || 0;
 
@@ -23,6 +24,9 @@ const AdminDashboard = () => {
     } else {
       setActiveForm(formType); // Open the selected form
     }
+  };
+  const toggleUserList = () => {
+    setIsUserListVisible((prev) => !prev); // Toggle the visibility of the user list
   };
   const navigateToBookingHistory = (userId,username) => {
     localStorage.setItem('selected-username', username);
@@ -36,7 +40,7 @@ const AdminDashboard = () => {
         <Heading>Admin Dashboard &#9992;</Heading>
         <CardsContainer>
           {/* Users Card */}
-          <Card>
+          <Card onClick={toggleUserList}>
             <CardTitle>Total Users</CardTitle>
             {userLoading ? (
               <CardValue>Loading...</CardValue>
@@ -59,16 +63,18 @@ const AdminDashboard = () => {
             )}
           </Card>
         </CardsContainer>
-        <UserListContainer>
-          <UserHeading>Users and Booking Counts</UserHeading>
-          {userData?.getUsersWithBookingCounts.map((user) => (
-            <UserCard key={user.id} onClick={() => navigateToBookingHistory(user.id,user.username)}>
-              <UserTitle>{user.username}</UserTitle>
-              <UserEmail>{user.email}</UserEmail>
-              <UserBookings>{user.bookingCount} bookings</UserBookings>
-            </UserCard>
-          ))}
-        </UserListContainer>
+        {isUserListVisible && (
+          <UserListContainer>
+            <UserHeading>Users and Booking Counts</UserHeading>
+            {userData?.getUsersWithBookingCounts.map((user) => (
+              <UserCard key={user.id} onClick={() => navigateToBookingHistory(user.id, user.username)}>
+                <UserTitle>{user.username}</UserTitle>
+                <UserEmail>{user.email}</UserEmail>
+                <UserBookings>{user.bookingCount} bookings</UserBookings>
+              </UserCard>
+            ))}
+          </UserListContainer>
+        )}
         {/* Conditionally Render Forms */}
         {activeForm === 'add' && (
           <FormContainer>
