@@ -2,6 +2,8 @@ import React from 'react';
 import './Footer.css';
 
 const Footer = () => {
+  
+  const storedUserId = localStorage.getItem("user-id");
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -17,7 +19,7 @@ const Footer = () => {
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/packages">Packages</a></li>
-             <li><a href="/booking-history">Booking History</a></li>
+             <li><a href={`/booking-history/${storedUserId}`}>Booking History</a></li>
              <li><a href="/aboutus">About Us</a></li>
           </ul>
         </div>
