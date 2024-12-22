@@ -12,7 +12,7 @@ const BookingContent = () => {
   };
 
   const handleUserCart = () => {
-    navigate('/booking-history');
+    navigate(`/booking-history/${localStorage.getItem('user-id')}`);
   };
   return (
     <ContentContainer>
