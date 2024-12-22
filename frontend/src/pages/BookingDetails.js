@@ -13,7 +13,8 @@ const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 const BookingDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const booking = location.state; // Access the booking data passed through state
+  const booking = location.state; 
+  const storedId=localStorage.getItem('user-id');
 
   const [images, setImages] = useState([]);
   const [updateBookingStatus] = useMutation(UPDATE_BOOKING_STATUS);
@@ -23,7 +24,7 @@ const BookingDetails = () => {
   useEffect(() => {
     if (!booking) {
       console.warn('Booking not found. Redirecting to Booking History...');
-      navigate('/booking-history');
+      navigate(`/booking-history/${storedId}`);
     } else {
       fetchUnsplashImages(booking.package?.destination+' tourism' || 'travel');
     }
@@ -59,7 +60,7 @@ const BookingDetails = () => {
 
       if (data.updateBookingStatus.status === 'Confirmed') {
         alert('Payment successful! Your booking is now confirmed.');
-        navigate('/booking-history');
+        navigate(`/booking-history/${storedId}`);
       }
     } catch (err) {
       console.error('Error updating booking status:', err);
