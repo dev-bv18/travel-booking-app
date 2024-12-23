@@ -38,13 +38,14 @@
   margin-bottom: 10px;
 }
 
-.footer-section ul li a {
+.footer-section ul li  {
   color: white;
   text-decoration: none;
   transition: color 0.3s;
+  cursor: pointer;
 }
 
-.footer-section ul li a:hover {
+.footer-section ul li:hover {
   color: #ffeb3b;
 }
 
