@@ -93,9 +93,10 @@
   padding: 10px;
   display: block;
   color: #333;
+  font-weight: 300;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.6s;
 }
 
 .dropdown-item:hover {
@@ -116,5 +117,5 @@
 
 .logout-button:hover {
   background-color:  #f0f8ff;
-  color:black;
+  color:#00646b;
 }
