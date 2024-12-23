@@ -160,7 +160,7 @@ function HomePage() {
                 </CardContent>
               </Card>
             ))}
-            <Card onClick={showmore}><CardContent><p id="explore">Explore More &#9992;</p></CardContent></Card>
+            <Card onClick={showmore}><CardContent><CardTitle id="explore">Explore More &#9992;</CardTitle></CardContent></Card>
           </PackageCardContainer>
         </LatestPackagesSection>
 
@@ -253,7 +253,7 @@ const PackageImage = styled.img`
 `;
 const SectionHeading = styled.h2`
    font-size: 2rem;
-  color: rgb(26, 79, 92);
+  color:rgb(26, 79, 92);
   font-weight: 600;
   margin-bottom: 20px;
  
@@ -361,7 +361,7 @@ const ContactHeading = styled.h3`
 
 const FormSubHeading = styled.h2`
   font-size: 2rem;
-  color: #212529;
+  color: rgb(26, 79, 92);
   font-weight: 600;
   margin-bottom: 20px;
 `;
@@ -664,10 +664,11 @@ const Card = styled.div`
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-
     h3 {
-      color:rgba(0, 0, 0, 0.9);
+      color:yellow;
     }
+      #explore{
+      color:yellow;}
   }
 `;
 
