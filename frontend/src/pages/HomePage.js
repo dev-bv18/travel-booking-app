@@ -349,6 +349,7 @@ const FormWrapper = styled.div`
   max-width: 700px;
   padding: 20px;
   border-radius: 10px;
+  background-color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
