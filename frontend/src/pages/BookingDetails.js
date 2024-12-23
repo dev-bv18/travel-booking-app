@@ -95,7 +95,7 @@ const BookingDetails = () => {
     <strong>Price:</strong> ₹{booking.package?.price || 'N/A'}
   </p>
 
-    {booking.status === 'Pending' ?<button onClick={handlePayment}> 'Pay Now'  </button> :<h3>Paid 💸</h3>}
+    {booking.status === 'Pending' ?<button onClick={handlePayment}> Pay Now  </button> :<h3>Paid 💸</h3>}
     <p id="status">
     <strong>Status:</strong> {booking.status}
   </p>
@@ -216,6 +216,9 @@ const DetailsCard = styled.div`
     background: teal;
     color: white;
     border: none;
+    width:400px;
+    position: relative;
+    left: 35%;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;

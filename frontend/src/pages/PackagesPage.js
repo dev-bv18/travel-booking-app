@@ -161,6 +161,7 @@ const PackageCard = styled.div`
   border-radius: 10px;
   overflow: hidden;
   width: 49%;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
