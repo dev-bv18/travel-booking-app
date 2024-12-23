@@ -22,6 +22,9 @@ const BookingHistory = () => {
   });
   const navigate = useNavigate();
 
+   useEffect(() => {
+      window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
+    }, []);
   useEffect(() => {
     const token = localStorage.getItem('auth-token');
     const storedUserId = localStorage.getItem('user-id');
@@ -39,6 +42,11 @@ const BookingHistory = () => {
     setTimeout(() => setShowLoadingScreen(false), 2000);
   }, []);
   
+  useEffect(() => {
+    if (error) {
+      window.location.href = '/auth';
+    }
+  }, [error]);
   useEffect(() => {
    
   
