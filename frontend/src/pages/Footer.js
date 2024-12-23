@@ -1,9 +1,19 @@
 import React from 'react';
 import './Footer.css';
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
-  
-  const storedUserId = localStorage.getItem("user-id");
+  const navigate = useNavigate();
+  const gotobooking = () => {
+    navigate(`/booking-history/${storedUserId}`);
+  }
+  const gotoabout = () => {
+    navigate(`/aboutus`);
+    }
+    const gotopackage = () => {
+      navigate(`/packages`);
+    }
+   const storedUserId = localStorage.getItem("user-id");
   return (
     <footer className="footer">
       <div className="footer-content">
@@ -17,10 +27,10 @@ const Footer = () => {
         <div className="footer-section links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/packages">Packages</a></li>
-             <li><a href={`/booking-history/${storedUserId}`}>Booking History</a></li>
-             <li><a href="/aboutus">About Us</a></li>
+            <li onClick={()=>navigate('/')}>Home</li>
+            <li onClick={gotopackage}>Packages</li>
+             <li onClick={gotobooking}>Booking History</li>
+             <li onClick={gotoabout}>About Us</li>
           </ul>
         </div>
         <div className="footer-section contact">
