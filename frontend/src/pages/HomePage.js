@@ -483,7 +483,8 @@ const Container = styled.div`
   align-items: center;
   min-height: 100vh;
   padding-top:70px;
-  background:#f0f8ff;
+  background-size:contain;
+  background-repeat:no-repeat;
 `;
 
 const Content = styled.div`
