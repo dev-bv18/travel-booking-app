@@ -666,7 +666,7 @@ const Card = styled.div`
     transform: translateY(-10px);
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
     h3 {
-      color:yellow;
+      color:rgb(0, 44, 62);
     }
       #explore{
       color:yellow;}
