@@ -227,13 +227,12 @@ const Image = styled.img`
   transition: all 0.3s ease;
   &:hover {
     border: 2px solid yellow;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
   }
   
 `;
 
 const RelatedPackagesSection = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
   h2 {
     color: teal;
     margin-bottom: 20px;
