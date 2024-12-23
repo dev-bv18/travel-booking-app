@@ -92,7 +92,7 @@ const BookingDetails = () => {
   </p>
   <p>{booking.package?.duration} itinerary</p>
   <p>
-    <strong>Price:</strong> ₹{booking.package?.price || 'N/A'}
+     <strike>₹{booking.package?.price+booking.package?.price || 'N/A'}</strike> ₹{booking.package?.price || 'N/A'}
   </p>
 
     {booking.status === 'Pending' ?<button onClick={handlePayment}> Pay Now  </button> :<h3>Paid 💸</h3>}
@@ -206,7 +206,8 @@ const DetailsCard = styled.div`
     margin-bottom: 10px;
     color:rgba(201, 241, 251, 0.9);
   }
-
+strike{
+color:grey;}
   #status {
     font-weight: bold;
     color: ${({ status }) => (status === 'Pending' ? 'red' : 'limegreen')};

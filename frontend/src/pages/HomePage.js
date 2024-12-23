@@ -93,12 +93,7 @@ function HomePage() {
                 memorable journeys. Whether you're planning a quick weekend
                 getaway to recharge, a much-anticipated family vacation filled
                 with fun and bonding, or a seamless business trip to keep you
-                ahead of your schedule, we've got you covered. Our platform is
-                designed to take the stress out of planning, offering you a
-                hassle-free experience that allows you to focus on what truly
-                matters – enjoying the journey and the destination. Let us take
-                care of the details while you embrace the joy of exploring the
-                world. 
+                ahead of your schedule, we've got you covered.
                 </ExtendedDescription>
                 <ContactLink onClick={handleScrollToContact}>Get in touch</ContactLink>
               </TextSection>
@@ -258,7 +253,7 @@ const PackageImage = styled.img`
 `;
 const SectionHeading = styled.h2`
    font-size: 2rem;
-  color: #212529;
+  color: rgb(26, 79, 92);
   font-weight: 600;
   margin-bottom: 20px;
  
@@ -618,6 +613,7 @@ const ImageSection = styled.div`
 
 const StyledImage = styled.img`
   width: 508px;
+  position:relative;
   height: 338px;
   border-radius: 8px;
 `;
@@ -670,7 +666,7 @@ const Card = styled.div`
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 
     h3 {
-      color:yellow;
+      color:rgba(0, 0, 0, 0.9);
     }
   }
 `;
@@ -698,6 +694,7 @@ const CardTitle = styled.h3`
   font-weight: bold;
   margin-bottom: 10px;
   transition: color 0.3s ease;
+
 `;
 
 const CardDescription = styled.p`

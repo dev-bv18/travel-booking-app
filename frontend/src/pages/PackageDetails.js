@@ -102,7 +102,7 @@ const PackageDetails = () => {
           )}
         </DetailsCard>
         <ImagesSection>
-          <h2>Destination Gallery</h2>
+          <h2>Destination Gallery &#9992;</h2>
           {images.length > 0 ? (
             <Carousel {...carouselSettings}>
               {images.map((src, index) => (
@@ -125,7 +125,7 @@ const PackageDetails = () => {
           )}
         </ImagesSection>
         <RelatedPackagesSection>
-          <h2>Other Packages You May Like</h2>
+          <h2>Other Packages You May Like &#9992;</h2>
           {packagesLoading ? (
             <p>Loading packages...</p>
           ) : (
@@ -163,8 +163,6 @@ const Alert = styled.span`
 const PageWrapper = styled.div`
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.67), rgba(0, 0, 0, 0.7)),
-    url(${(props) => props.backgroundImage});
   background-size: cover;
   background-position: center;
   color: white;
@@ -173,11 +171,14 @@ const Container = styled.div`
   padding: 40px;
   padding-top: 80px;
   h3{
-  color:rgb(178, 243, 255);                                                                                                                                                                                                                                                                                                     }
+  color:teal;}  
+h1{
+ color: rgb(26, 79, 92);
+}                                                                                                                                                                                                                                                                                                 }
 `;
 
 const DetailsCard = styled.div`
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.61), rgba(0, 0, 0, 0.79));
+  background: teal;
   text-align: left;
   color: white;
   border-radius: 10px;
@@ -187,19 +188,22 @@ const DetailsCard = styled.div`
 `;
 
 const BookButton = styled.button`
-  background: teal;
-  color: white;
+  background: white;
+  color:teal;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
+  &:hover{
+    color:yellow;
+    background:rgba(0, 55, 67, 0.9); }
 `;
 
 const ImagesSection = styled.div`
   margin-top: 40px;
   h2 {
-    color: white;
+    color:teal;
     margin-bottom: 20px;
   }
 `;
@@ -212,6 +216,7 @@ const Carousel = styled(Slider)`
 
 const ImageWrapper = styled.div`
   padding: 10px;
+  transition: transform 0.3s ease;
 `;
 
 const Image = styled.img`
@@ -219,12 +224,18 @@ const Image = styled.img`
   height: 400px;
   border-radius: 10px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    border: 2px solid yellow;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
 `;
 
 const RelatedPackagesSection = styled.div`
   margin-top: 40px;
   h2 {
-    color: white;
+    color: teal;
     margin-bottom: 20px;
   }
 `;
@@ -238,6 +249,7 @@ const RelatedPackagesContainer = styled.div`
 const PackageCard = styled.div`
   background: white;
   border-radius: 10px;
+  border: 1px solid teal;
   width:500px;
   padding: 20px;
   cursor: pointer;

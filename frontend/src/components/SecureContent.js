@@ -40,7 +40,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 40px;
+  padding: 20px;
   padding-top:80px;
   background-color: #f9f9f9;
 `;
@@ -55,7 +55,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Image = styled.img`
-  max-width: 90%;
+  max-width: 70%;
   height: auto;
   border-radius: 8px;
 `;
@@ -64,6 +64,8 @@ const ContentWrapper = styled.div`
   flex: 1;
   max-width: 600px;
   padding: 0 20px;
+  position:relative;
+  left:-100px;
 
   @media (max-width: 768px) {
     padding: 0;
