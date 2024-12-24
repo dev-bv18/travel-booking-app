@@ -7,11 +7,11 @@ module.exports = {
         email = email.trim().toLowerCase();
         const hashed = await bcrypt.hash(password, 10);
         try {
-          const existingEmail = await models.User.findOne({ where: { email } });
+          const existingEmail = await models.User.findOne({ email } );
         if (existingEmail) {
             throw new Error('A user with this email already exists.');
         }
-        const existingUsername = await models.User.findOne({ where: { username } });
+        const existingUsername = await models.User.findOne({  username  });
         if (existingUsername) {
             throw new Error('A user with this username already exists.');
         }
