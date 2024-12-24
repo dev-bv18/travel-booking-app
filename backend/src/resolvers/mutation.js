@@ -7,6 +7,15 @@ module.exports = {
         email = email.trim().toLowerCase();
         const hashed = await bcrypt.hash(password, 10);
         try {
+          const existingEmail = await models.User.findOne({ where: { email } });
+        if (existingEmail) {
+            throw new Error('A user with this email already exists.');
+        }
+        const existingUsername = await models.User.findOne({ where: { username } });
+        if (existingUsername) {
+            throw new Error('A user with this username already exists.');
+        }
+
             const user = await models.User.create({
                 username,
                 email,
@@ -16,7 +25,7 @@ module.exports = {
             return user;
         } catch (err) {
             console.error(err);
-            throw new Error('Error creating account');
+            throw new Error(err.message||'Error creating account');
         }
     },
 
