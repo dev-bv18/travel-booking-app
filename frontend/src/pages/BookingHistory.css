@@ -41,7 +41,33 @@
     margin-bottom: 20px;
     text-align: left;
   }
-  
+  .booking-history-options{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .booking-history-options label{
+    font-weight: 600;
+  }
+  .filter-container{
+    color:teal;
+    margin-bottom: 20px;
+  }
+  .filter-container select{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid teal;
+  }
+  .sort-container{
+    margin-bottom: 20px;
+    color:teal;
+  }
+  .sort-container select{
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid teal;
+  }
   .booking-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
