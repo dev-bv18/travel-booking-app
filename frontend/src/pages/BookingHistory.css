@@ -65,11 +65,11 @@
     color: #29626b;
   }
   #start{
-    color: white;
+    color: rgb(21, 59, 82);
     font-size: 30px;
   }
   #message{
-    color: white;
+    color: teal;
     font-size: 20px;
   }
   #start:hover{

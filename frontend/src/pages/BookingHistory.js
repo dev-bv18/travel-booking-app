@@ -33,7 +33,7 @@ const BookingHistory = () => {
 
     if (!token || !storedUserId) {
       alert('Please log in to view your booking history.');
-      window.location.href = '/auth';
+      navigate('/auth');
       return;
     }
 
@@ -44,7 +44,7 @@ const BookingHistory = () => {
   
   useEffect(() => {
     if (error) {
-      window.location.href = '/auth';
+      navigate('/auth');
     }
   }, [error]);
   useEffect(() => {
@@ -97,10 +97,8 @@ const BookingHistory = () => {
         {bookingHistory.length === 0 ? (
           <div>
          <Empty/>
-         <p id="message">You currently do not have any bookings.</p>
-         <Link to="/packages">
-          <p id="start">Start Booking!</p>
-         </Link></div>) : (
+         <p id="message"> No bookings yet!.</p>
+        </div>) : (
         <ul className='bookings-list'>
         {bookingHistory.map((booking) => (
           <li key={booking.id} className="booking-card" 
