@@ -7,6 +7,8 @@ import NavBar from './NavBar';
 import {jwtDecode} from 'jwt-decode';
 import Footer from './Footer';
 import bgImage from '../assests/login.gif'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { decode } from 'punycode';
 
 const AuthPage = () => {
@@ -18,6 +20,38 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const handlelogo=()=>navigate('/');
 
+  const toastOptions = {
+    position: 'bottom-right',
+    autoClose: 3000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'dark',
+  };
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      toast.error('Password must be at least 8 characters long.', toastOptions);
+      return false;
+    }
+    if (!/[A-Z]/.test(password)) {
+      toast.error('Password must contain at least one uppercase letter.', toastOptions);
+      return false;
+    }
+    if (!/[a-z]/.test(password)) {
+      toast.error('Password must contain at least one lowercase letter.', toastOptions);
+      return false;
+    }
+    if (!/\d/.test(password)) {
+      toast.error('Password must contain at least one number.', toastOptions);
+      return false;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      toast.error('Password must contain at least one special character.', toastOptions);
+      return false;
+    }
+    return true;
+  };
+
+
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -25,10 +59,13 @@ const AuthPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
+    if (isSignUp && !validatePassword(form.password)) {
+      return; // Stop if password validation fails
+    }
     try {
       if (isSignUp) {
-        const { data } = await signUp({ variables: { ...form } });
-        alert('Sign-up successful! Please log in.');
+        await signUp({ variables: { ...form } });
+        toast.success('Sign-up successful! Please log in.', toastOptions);
         setIsSignUp(false);
       } else {
         const { data } = await login({ variables: { email: form.email, password: form.password } });
@@ -41,12 +78,14 @@ const AuthPage = () => {
           localStorage.setItem('email', form.email);
           localStorage.setItem('username',decoded.username);
          localStorage.setItem('role',decoded.role);
+         toast.success('Login successful!', toastOptions);
           navigate('/');
         } else {
           throw new Error('Invalid login response');
         }
       }
     } catch (err) {
+      toast.error(err.message || 'Error during authentication', toastOptions);
       setAuthError(err.message || 'Error during authentication');
     }
   };
@@ -101,6 +140,7 @@ const AuthPage = () => {
       </AuthForm>
       {authError && <ErrorText>{authError}</ErrorText>}
     </AuthContainer>
+    <ToastContainer />
     <Footer/></div>
   
   );

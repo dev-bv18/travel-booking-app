@@ -5,7 +5,7 @@ import Navbar from './NavBar';
 import './BookingHistory.css';
 import LoadingScreen from './LoadingScreen';
 import Empty from './Empty';
-import { Link ,useParams } from 'react-router-dom';
+import {useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 
@@ -23,7 +23,7 @@ const BookingHistory = () => {
   const navigate = useNavigate();
 
    useEffect(() => {
-      window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
+      window.scrollTo(0, 0); 
     }, []);
   useEffect(() => {
     const token = localStorage.getItem('auth-token');
