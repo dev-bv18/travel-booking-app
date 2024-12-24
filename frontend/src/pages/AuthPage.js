@@ -79,7 +79,9 @@ const AuthPage = () => {
           localStorage.setItem('username',decoded.username);
          localStorage.setItem('role',decoded.role);
          toast.success('Login successful!', toastOptions);
-          navigate('/');
+         setTimeout(() => {
+          navigate("/");
+          }, 3000);
         } else {
           throw new Error('Invalid login response');
         }
