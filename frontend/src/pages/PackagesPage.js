@@ -47,7 +47,8 @@ const PackagesPage = () => {
     if (searchQuery) {
       filtered = filtered.filter(pkg => 
         pkg.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-        pkg.destination.toLowerCase().includes(searchQuery.toLowerCase())
+        pkg.destination.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        pkg.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
   
