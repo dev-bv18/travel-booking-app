@@ -122,12 +122,6 @@ const AuthPage = () => {
           placeholder="Password"
           required
         />
-        {isSignUp && (
-          <FormSelect name="role" value={form.role} onChange={handleInputChange}>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </FormSelect>
-        )}
         <SubmitButton type="submit">{isSignUp ? 'Sign Up' : 'Login'}</SubmitButton>
         <SwitchButton
           onClick={(e) => {
