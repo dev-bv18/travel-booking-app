@@ -205,7 +205,7 @@ const PackagesPage = () => {
                     <Detail>{pkg.duration} itinerary</Detail>
                     <Detail>
                       <strong>Available:</strong>{' '}
-                      {pkg.availability < 10 ? (
+                      {(pkg.availability <= 10 && pkg.availability>=1) ? (
                         <span className="blinking-text">{pkg.availability} (Few left)</span>
                       ) : (
                         pkg.availability
@@ -310,9 +310,11 @@ input[type="range"]{
 width:100%;
 }
 span{
-  color:teal;
+  color:grey;
   font-weight:bold;
 }
+  span.blinking-text {
+  color:red;}
  select{
  width:100%;
   padding:10px;
