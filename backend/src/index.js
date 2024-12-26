@@ -12,8 +12,6 @@ const resolvers = require('./resolvers');
 require('dotenv').config();
 
 const app = express();
-app.use(helmet);
-app.use(cors);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
