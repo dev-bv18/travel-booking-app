@@ -30,6 +30,7 @@ module.exports=
   
         try {
           const bookings = await models.Booking.find({ user: userId })
+          .populate('user')
       .populate('package')
       .then(bookings => bookings.filter(booking => booking.package != null)); 
 
