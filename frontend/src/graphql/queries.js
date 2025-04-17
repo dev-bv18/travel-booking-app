@@ -27,6 +27,10 @@ export const GET_BOOKING_HISTORY = gql`
   query ($userId: ID!) {
     getBookingHistory(userId: $userId) {
       id
+      user{
+      id
+      username
+      }
       package {
         title
       description

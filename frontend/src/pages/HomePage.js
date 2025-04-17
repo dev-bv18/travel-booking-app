@@ -11,6 +11,7 @@ import banner from "../assests/banner1.webp";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import Empty from "./Empty";
+import Recommendations from "../components/Recommendations";
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
 function HomePage() {
@@ -214,7 +215,7 @@ function HomePage() {
             </ContactInfo>
             </ContactSection>
       </Container>
-      
+      <Recommendations/>
       <Footer/>
     </div>
   );
