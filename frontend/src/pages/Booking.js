@@ -6,7 +6,7 @@ import BookingContent from "../components/BookingContent";
 
 const Booking = () => {
     useEffect(() => {
-    window.scrollTo(0, 0); // Scrolls to the top when the component is mounted
+    window.scrollTo(0, 0); 
   }, []);
   return (
     <div>
