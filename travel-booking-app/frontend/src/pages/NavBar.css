@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Lemon&display=swap');
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed; /* Keep the navbar fixed */
+    top: 0; /* Position at the top of the viewport */
+    left: 0;
+    width: 100%; /* Ensure it spans the full width of the viewport */
+    padding: 20px;
+    background: #00646b;
+    color: white;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better visibility */
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'lemon';
+  }
+  
+  .navbar-logo {
+    text-decoration: none;
+    color: yellow;
+  }
+  
+  .navbar-links {
+    display: flex;
+    padding-right: 75px;
+    font-family: Arial,sans-serif;
+    font-weight: 800;
+    gap: 20px;
+  }
+.logout-button{
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 800;
+}
+.logout-button:hover{
+   cursor: pointer;
+}
+  
+  .nav-link{
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: yellow;
+  }
+  body {
+    margin-top: 70px; 
+  }
+.dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: Arial,sans-serif;
+  cursor: pointer;
+}
+
+.dropdown-toggle {
+  color: rgb(255, 255, 255);
+}
+.dropdown-toggle img{
+  float: right;
+  height: 30px;
+  right: -37px;
+  top:-1px;
+  position: absolute;
+  
+}
+
+.dropdown-menu {
+  position: absolute;
+  margin-top: 10px;
+  top: 100%;
+  right: -25px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  min-width: 150px;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  padding: 10px;
+  display: block;
+  color: #333;
+  font-weight: 300;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.6s;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f8ff;
+  color: #00646b;
+}
+
+.logout-button {
+  background: none;
+  border: none;
+  color: red;
+  text-align: left;
+  width: 100%;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.logout-button:hover {
+  background-color:  #f0f8ff;
+  color:#00646b;
+}
