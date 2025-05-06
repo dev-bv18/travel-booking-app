@@ -1,0 +1,112 @@
+1. Backend API Implementation (Node.js/Express Example)
+Add this to your backend server (e.g., server.js or routes/transport.js):
+// routes/transport.js
+const express = require('express');
+const router = express.Router();
+const Transport = require('../models/Transport'); // Your DB model
+
+// Check available transport modes between locations
+router.get('/availability', async (req, res) => {
+  try {
+    const { origin, destination } = req.query;
+
+    // 1. Query database for available routes
+    const availableModes = await Transport.aggregate([
+      {
+        $match: {
+          $or: [
+            { originCity: origin, destinationCity: destination },
+            { originCode: origin, destinationCode: destination }
+          ]
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          modes: { $addToSet: "$mode" } // Returns unique modes (e.g., ["flight", "bus"])
+        }
+      }
+    ]);
+
+    // 2. Format response
+    const modes = availableModes.length > 0 ? availableModes[0].modes : [];
+    
+    res.json({ 
+      availableModes: modes,
+      origin,
+      destination
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to check transport options' });
+  }
+});
+
+module.exports = router;
+
+2. Database Model (Mongoose Example)
+Create a schema for transport options (save as models/Transport.js):
+const mongoose = require('mongoose');
+
+const TransportSchema = new mongoose.Schema({
+  mode: { type: String, enum: ['flight', 'train', 'bus'], required: true },
+  originCity: String,    // e.g., "New York"
+  originCode: String,    // e.g., "NYC" (IATA code for airports)
+  destinationCity: String,
+  destinationCode: String,
+  active: { type: Boolean, default: true } // To filter inactive routes
+});
+
+module.exports = mongoose.model('Transport', TransportSchema);
+
+3. Connect to Frontend
+In your frontend (SelectMode.js), ensure the API base URL is configured:
+// In SelectMode.js
+const checkTransportAvailability = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE}/transport/availability`, 
+      {
+        params: { 
+          origin: location, 
+          destination: packageData.destination 
+        }
+      }
+    );
+    setAvailableModes(response.data.availableModes);
+  } catch (err) {
+    // Handle error
+  }
+};
+
+
+
+
+
+
+
+Key Implementation Notes
+Database Indexing (For performance):
+
+javascript
+// Add to TransportSchema
+TransportSchema.index({ originCity: 1, destinationCity: 1 });
+TransportSchema.index({ originCode: 1, destinationCode: 1 });
+Testing the API:
+Use Postman or curl to verify:
+
+bash
+curl "http://localhost:5000/api/transport/availability?origin=NYC&destination=LAX"
+Sample Response:
+
+json
+{
+  "availableModes": ["flight", "bus"],
+  "origin": "NYC",
+  "destination": "LAX"
+}
+Security:
+
+Add input sanitization for origin/destination.
+
+Use JWT auth if routes are protected.
