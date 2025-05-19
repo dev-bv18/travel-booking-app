@@ -18,6 +18,9 @@ import PaymentForm from './pages/PaymentForm';
 import AboutUs from './pages/AboutUs';
 import BookingDetails from './pages/BookingDetails';
 import PackageDetails from './pages/PackageDetails';
+import SelectMode from './pages/SelectMode';
+import Booking from './components/Booking';
+import TransportBooking from './pages/transportbooking';
 const App = () => {
   return (
     <ApolloWrapper>
