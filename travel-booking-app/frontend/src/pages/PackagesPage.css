@@ -1,0 +1,58 @@
+  
+  .banner {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(30deg, rgba(0, 0, 0, 0.6), rgb(255, 255, 255)), url('../assests/discount.webp');
+    background-size: contain;
+    padding-top: 0px;
+    margin-top: 70px;
+  }
+  
+  .left-banner {
+    float: left;
+    color: #ffffff;
+    font-family: 'Lemon';
+    font-size: 60px;
+    padding-top: 40px;
+    padding-left: 20px;
+    /* Blinking effect */
+    animation: blink 1s infinite;
+  }
+  
+  .right-banner {
+    font-family: 'Lemon';
+    font-size: 40px;
+    float: right;
+    color: teal;
+    padding-top: 60px;
+    padding-right: 50px;
+    font-weight: 700;
+  }
+  
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  .blinking-text {
+    animation: blinking 1s infinite; /* Blinking effect every 1 second */
+    color: red; /* Highlight with red color */
+    font-weight: bold;
+  }
+  
+  @keyframes blinking {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  
