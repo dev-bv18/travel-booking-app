@@ -18,6 +18,9 @@ import PaymentForm from './pages/PaymentForm';
 import AboutUs from './pages/AboutUs';
 import BookingDetails from './pages/BookingDetails';
 import PackageDetails from './pages/PackageDetails';
+import Recommendations from './components/Recommendations';
+import ThemeRecommendations from './components/ThemeRecommendations';
+import Chatbot from './components/Chatbot';
 const App = () => {
   return (
     <ApolloWrapper>
@@ -38,8 +41,11 @@ const App = () => {
           <Route path="/booking-details/:id" element={<BookingDetails />} />
           <Route path="/booking-history/:userId" element={<BookingHistory />} />
           <Route path="/package-details/:id" element={<PackageDetails />} />
+          <Route path="/recommend" element={<Recommendations />} /> 
+          <Route path="/themes" element={<ThemeRecommendations />} />   
 
                   </Routes>
+                  <Chatbot/>
         </AppContainer>
       </Router> 
     

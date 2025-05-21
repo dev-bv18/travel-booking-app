@@ -142,6 +142,7 @@ function HomePage() {
                 </Card>
               </CardContainer>
             </PackagesSection>
+            <Recommendations/>
         {/* Latest Travel Packages Section */}
         <LatestPackagesSection>
           <SectionHeading>Latest Travel Packages</SectionHeading>
@@ -215,7 +216,6 @@ function HomePage() {
             </ContactInfo>
             </ContactSection>
       </Container>
-      <Recommendations/>
       <Footer/>
     </div>
   );

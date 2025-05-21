@@ -1,0 +1,115 @@
+/* Themes.css */
+
+.theme-section {
+    padding: 40px 0 30px 0;
+    background: #f8f9fa;
+    margin-bottom: 30px;
+    border-radius: 10px;
+  }
+  
+  .theme-heading {
+    font-size: 2.2rem;
+    color: teal;
+    text-align: center;
+    margin-bottom: 35px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .theme-category {
+    margin-bottom: 40px;
+  }
+  
+  .theme-title {
+    font-size: 1.4rem;
+    color: #1a4f5c;
+    margin-bottom: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: left;
+    padding-left: 10px;
+  }
+  
+  .theme-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-bottom: 10px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .theme-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s, transform 0.3s;
+    border: 1px solid #e0e0e0;
+  }
+  
+  .theme-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+    transform: translateY(-6px) scale(1.03);
+  }
+  
+  .theme-card-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .theme-card-body {
+    padding: 18px 16px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .theme-card-body h4 {
+    font-size: 1.1rem;
+    color: #1a4f5c;
+    font-weight: 600;
+    margin-bottom: 7px;
+  }
+  
+  .theme-destination {
+    color: #666;
+    font-size: 0.97rem;
+    margin-bottom: 7px;
+  }
+  
+  .theme-price {
+    font-weight: bold;
+    color: teal;
+    font-size: 1.08rem;
+    margin-bottom: 6px;
+  }
+  
+  .theme-rating {
+    color: #ffb400;
+    font-size: 0.98rem;
+    font-weight: 500;
+  }
+  
+  .theme-loading, .theme-error {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 1.1rem;
+  }
+  
+  .theme-error {
+    color: #d9534f;
+    background: #f8d7da;
+    border-radius: 6px;
+    margin: 20px auto;
+    max-width: 500px;
+  }
