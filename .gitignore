@@ -7,4 +7,5 @@ build/
 logs/
 
 #ignore dialogflow-key.json
-dialogflow-key.json
+backend/src/chatbot/dialogflow-key.json
+
