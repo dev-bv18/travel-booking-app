@@ -9,3 +9,4 @@ logs/
 #ignore dialogflow-key.json
 backend/src/chatbot/dialogflow-key.json
 
+backend/src/chatbot/dialogflow-key.json
