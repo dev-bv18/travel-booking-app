@@ -5,3 +5,6 @@ node_modules/
 # Build and log files
 build/
 logs/
+
+#ignore dialogflow-key.json
+dialogflow-key.json
