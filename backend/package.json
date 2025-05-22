@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "travel_app",
   "dependencies": {
+    "amadeus": "^11.0.0",
     "apollo-server": "^3.13.0",
     "apollo-server-express": "^3.13.0",
     "axios": "^1.9.0",

@@ -18,9 +18,8 @@ import PaymentForm from './pages/PaymentForm';
 import AboutUs from './pages/AboutUs';
 import BookingDetails from './pages/BookingDetails';
 import PackageDetails from './pages/PackageDetails';
-import SelectMode from './pages/SelectMode';
-import Booking from './components/Booking';
 import TransportBooking from './pages/transportbooking';
+import HotelBooking from './pages/HotelBooking';
 const App = () => {
   return (
     <ApolloWrapper>
@@ -41,7 +40,8 @@ const App = () => {
           <Route path="/booking-details/:id" element={<BookingDetails />} />
           <Route path="/booking-history/:userId" element={<BookingHistory />} />
           <Route path="/package-details/:id" element={<PackageDetails />} />
-
+          <Route path="/transport-booking" element={<TransportBooking />} />
+          <Route path="/hotel-booking" element={<HotelBooking />} />
                   </Routes>
         </AppContainer>
       </Router> 
