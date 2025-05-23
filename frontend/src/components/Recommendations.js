@@ -143,7 +143,7 @@ const Recommendations = () => {
           const nextIndex = prevIndex + 1;
           return nextIndex >= recommendations.length ? 0 : nextIndex;
         });
-      }, 3000);
+      }, 5000);
     }
   };
 
@@ -191,17 +191,18 @@ const Recommendations = () => {
                   onClick={() => handlePackageClick(pkg)}
                   className={idx === currentIndex ? 'active' : ''}
                 >
-                  <CardInner style={{
-  background: `linear-gradient(to left, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.88)), url(${imageUrl})`,
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-  backgroundBlendMode: 'multiply',
-  borderRadius: '24px',
-  boxShadow: '0 12px 40px rgba(0, 128, 128, 0.3)',
-  overflow: 'hidden',
-  transition: 'all 0.4s ease-in-out',
-}}
+                 <CardInner
+  style={{
+    backgroundImage: `linear-gradient(to left, rgba(0, 0, 0, 0.46), rgba(0, 0, 0, 0.88)), url(${imageUrl})`,
+    backgroundRepeat: 'no-repeat, no-repeat',
+    backgroundSize: 'cover, cover',
+    backgroundPosition: 'center, center',
+    backgroundBlendMode: 'multiply',
+    overflow: 'hidden',
+    transition: 'all 0.4s ease-in-out',
+  }}
 >
+
                     <ImageSection>
                       <PackageImage src={imageUrl} alt={pkg.title || 'Package'} />
                       <PriceTag>₹{pkg.price || '0'}</PriceTag>
@@ -256,7 +257,6 @@ const RecommendationsContainer = styled.section`
   padding: 80px 24px;
   max-width: 100%;
   overflow: hidden;
-  border-radius: 24px;
 `;
 const PackageDescription = styled.p`
   font-size: 0.8rem;
@@ -321,7 +321,6 @@ const CardInner = styled.div`
   display: flex;
   flex-direction: row;
   height: 320px;
-  border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 15px 40px rgba(13, 148, 136, 0.1);
   transition: all 0.3s ease;
@@ -329,7 +328,6 @@ const CardInner = styled.div`
 
   &:hover {
     box-shadow: 0 25px 50px rgba(13, 148, 136, 0.15);
-    transform: translateY(-6px);
   }
 
   @media (max-width: 768px) {
@@ -357,10 +355,6 @@ const PackageImage = styled.img`
   object-fit: cover;
   transition: transform 0.7s ease;
   border-radius: inherit;
-
-  ${CardInner}:hover & {
-    transform: scale(1.05);
-  }
 `;
 
 const PriceTag = styled.div`

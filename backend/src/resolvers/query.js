@@ -18,6 +18,17 @@ module.exports=
           bookingCount: user.bookings.length,
         }));
       },
+      getUsersByPackage: async (_, { packageId }, { models }) => {
+  const bookings = await models.Booking.find({ package: packageId }).populate('user');
+
+  const uniqueUsersMap = new Map();
+  bookings.forEach(booking => {
+    uniqueUsersMap.set(booking.user.id, booking.user);
+  });
+
+  return Array.from(uniqueUsersMap.values());
+}
+,
       // Fetch booking history for a specific user
       getBookingHistory: async (_, { userId }, { models, user }) => {
         if (!user) {

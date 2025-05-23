@@ -37,6 +37,7 @@ type UserWithBookingCount {
 
     type Query {
         getPackages:[TravelPackage!]
+        getUsersByPackage(packageId: ID!): [User!]
         getUsersWithBookingCounts: [UserWithBookingCount!]
         getBookingHistory(userId: ID!): [Booking!]
     }

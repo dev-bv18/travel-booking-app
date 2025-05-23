@@ -22,8 +22,8 @@ import Recommendations from './components/Recommendations';
 import ThemeRecommendations from './components/ThemeRecommendations';
 import Chatbot from './components/Chatbot';
 import SelectMode from './pages/SelectMode';
-import Booking from './components/Booking';
-import TransportBooking from './pages/transportbooking';
+// // import Booking from './components/Booking';
+// import TransportBooking from './pages/transportbooking';
 const App = () => {
   return (
     <ApolloWrapper>

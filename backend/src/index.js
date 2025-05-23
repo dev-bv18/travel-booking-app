@@ -57,11 +57,11 @@ const server = new ApolloServer({
   
 });
 
-const transportRoutes = require('./routes/transport');
-app.use('/api/transport', transportRoutes);
+// const transportRoutes = require('./routes/transport');
+// app.use('/api/transport', transportRoutes);
 
 const startServer = async () => {
-  await server.start();  
+   await server.start();  
   server.applyMiddleware({ app, path: '/api' }); 
 
   app.listen({ port: 4000 }, () => {
