@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import NavBar from './NavBar';
 import Footer from './Footer';
 import bgad from '../assests/london.jpg';
+import Recommendations from '../components/Recommendations';
 
 const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 
@@ -122,6 +123,7 @@ const BookingDetails = () => {
             <p>Loading images...</p>
           )}
         </ImagesSection>
+        <Recommendations/>
         <Advertisement onClick={()=>navigate('/packages')}>Check out our latest packages !
             </Advertisement> </Container>
       <Footer />

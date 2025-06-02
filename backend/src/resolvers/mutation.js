@@ -1,159 +1,409 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { AuthenticationError } = require('apollo-server-express');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { AuthenticationError, UserInputError } = require('apollo-server-express');
 
 module.exports = {
-    registerUser: async (parent, { username, email, password, role }, { models }) => {
-        email = email.trim().toLowerCase();
-        const hashed = await bcrypt.hash(password, 10);
-        try {
-          const existingEmail = await models.User.findOne({ email } );
-        if (existingEmail) {
-            throw new Error('A user with this email already exists.');
-        }
-        const existingUsername = await models.User.findOne({  username  });
-        if (existingUsername) {
-            throw new Error('A user with this username already exists.');
-        }
+  // Existing authentication mutations
+  registerUser: async (parent, { username, email, password, role }, { models }) => {
+    email = email.trim().toLowerCase();
+    const hashed = await bcrypt.hash(password, 10);
+    try {
+      const existingEmail = await models.User.findOne({ email });
+      if (existingEmail) {
+        throw new Error('A user with this email already exists.');
+      }
+      const existingUsername = await models.User.findOne({ username });
+      if (existingUsername) {
+        throw new Error('A user with this username already exists.');
+      }
 
-            const user = await models.User.create({
-                username,
-                email,
-                password: hashed,
-                role: role || 'user'
-            });
-            return user;
-        } catch (err) {
-            console.error(err);
-            throw new Error(err.message||'Error creating account');
-        }
-    },
+      const user = await models.User.create({
+        username,
+        email,
+        password: hashed,
+        role: role || 'user'
+      });
+      return user;
+    } catch (err) {
+      console.error(err);
+      throw new Error(err.message || 'Error creating account');
+    }
+  },
 
-    loginUser: async (parent, { email, password }, { models }) => {
-        email = email.trim().toLowerCase();
+  loginUser: async (parent, { email, password }, { models }) => {
+    email = email.trim().toLowerCase();
 
-        const user = await models.User.findOne({ email });
-        if (!user) {
-            throw new Error('User not found');
-        }
+    const user = await models.User.findOne({ email });
+    if (!user) {
+      throw new Error('User not found');
+    }
 
-        const isValidPassword = await bcrypt.compare(password, user.password);
-        if (!isValidPassword) {
-            throw new AuthenticationError('Error Signing in');
-        }
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      throw new AuthenticationError('Error Signing in');
+    }
 
-        return jwt.sign({ id: user._id, role: user.role, email: user.email,username:user.username }, process.env.JWT_SECRET, { expiresIn: '2h' });
-    },
-    bookPackage: async (parent, { packageId, userId, date,status}, { models, user }) => {
-        const finalUserId = userId || user.id;          
-       const User=await models.User.findById(userId);
-       console.log(User);
-        if (!finalUserId) {
-          throw new AuthenticationError('You must be signed in to book a package');
-        }
-      
-        const travelPackage = await models.TravelPackage.findById(packageId);
-        if (!travelPackage) {
-          throw new Error('Travel package not found');
-        }
-      
-        if (travelPackage.availability <= 0) {
-          throw new Error('No availability for this package');
-        }
-        const booking = await models.Booking.create({
-          package: travelPackage,
-          user: User,
-          date,
-          status: status || 'Confirmed',
-        });
-      
+    return jwt.sign({ id: user._id, role: user.role, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '2h' });
+  },
+
+  // Updated booking mutation with payment support
+  bookPackage: async (parent, args, { models, user }) => {
+    const {
+      packageId,
+      userId,
+      date,
+      status,
+      paymentId,
+      paymentStatus,
+      paymentMethod,
+      totalAmount
+    } = args;
+
+    const finalUserId = userId || user.id;
+    const User = await models.User.findById(finalUserId);
+    
+    if (!finalUserId) {
+      throw new AuthenticationError('You must be signed in to book a package');
+    }
+
+    if (!User) {
+      throw new Error('User not found');
+    }
+
+    const travelPackage = await models.TravelPackage.findById(packageId);
+    if (!travelPackage) {
+      throw new Error('Travel package not found');
+    }
+
+    if (travelPackage.availability <= 0 && (status === 'Confirmed' || !status)) {
+      throw new Error('No availability for this package');
+    }
+
+    try {
+      const booking = await models.Booking.create({
+        package: travelPackage._id,
+        user: User._id,
+        date,
+        status: status || 'Pending',
+        paymentId,
+        paymentStatus: paymentStatus || 'pending',
+        paymentMethod,
+        totalAmount: totalAmount || travelPackage.price,
+      });
+
+      // Only reduce availability if booking is confirmed
+      if (booking.status === 'Confirmed') {
         travelPackage.availability -= 1;
         await travelPackage.save();
-        User.bookings.push(booking);
-        await User.save();
+      }
+
+      // Add booking to user's bookings array
+      User.bookings.push(booking._id);
+      await User.save();
+
+      // Populate and return the booking
+      await booking.populate('package');
+      await booking.populate('user');
       
-        return booking.populate('package');
-      },
-      updateBookingStatus: async (_, { bookingId, status }, { models }) => {
-        const booking = await models.Booking.findById(bookingId);
-        if (!booking) {
-          throw new Error('Booking not found');
-        }
+      return booking;
+    } catch (error) {
+      throw new Error(`Failed to create booking: ${error.message}`);
+    }
+  },
+
+  // Create payment intent with Stripe
+  createPaymentIntent: async (_, { packageId, userId, amount, currency }, { models, user }) => {
+    try {
+      const finalUserId = userId || user.id;
       
-        booking.status = status;
-        await booking.save();
+      // Verify package exists and get details
+      const travelPackage = await models.TravelPackage.findById(packageId);
+      if (!travelPackage) {
+        throw new UserInputError('Package not found');
+      }
+
+      // Verify user exists
+      const userDoc = await models.User.findById(finalUserId);
+      if (!userDoc) {
+        throw new UserInputError('User not found');
+      }
+
+      // Use package price if amount not provided
+      const finalAmount = amount || travelPackage.price;
+
+      // Create payment intent with Stripe
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(finalAmount * 100), // Convert to cents
+        currency: currency || 'inr',
+        metadata: {
+          packageId,
+          userId: finalUserId,
+          packageTitle: travelPackage.title,
+          userEmail: userDoc.email,
+        },
+        receipt_email: userDoc.email,
+        description: `Travel package booking - ${travelPackage.title}`,
+      });
+
+      return {
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id,
+        amount: finalAmount,
+        currency: paymentIntent.currency,
+      };
+    } catch (error) {
+      throw new Error(`Failed to create payment intent: ${error.message}`);
+    }
+  },
+
+  // Confirm payment after successful Stripe payment
+  confirmPayment: async (_, { bookingId, paymentIntentId }, { models }) => {
+    try {
+      // Verify payment with Stripe
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
       
-        // Populate the package field before returning the booking
-        await booking.populate('package');
+      if (paymentIntent.status !== 'succeeded') {
+        throw new Error('Payment not successful');
+      }
+
+      // Find and update booking
+      const booking = await models.Booking.findById(bookingId);
+      if (!booking) {
+        throw new UserInputError('Booking not found');
+      }
+
+      // Update booking with payment information
+      booking.status = 'Confirmed';
+      booking.paymentId = paymentIntentId;
+      booking.paymentStatus = paymentIntent.status;
+      booking.paymentMethod = paymentIntent.payment_method_types[0];
+      booking.totalAmount = paymentIntent.amount / 100;
+      await booking.save();
+
+      // Update package availability
+      const travelPackage = await models.TravelPackage.findById(booking.package);
+      if (travelPackage && travelPackage.availability > 0) {
+        travelPackage.availability -= 1;
+        await travelPackage.save();
+      }
+
+      // Populate and return updated booking
+      await booking.populate('package');
+      await booking.populate('user');
       
-        return booking;
-      }      
-,      
+      return booking;
+    } catch (error) {
+      throw new Error(`Failed to confirm payment: ${error.message}`);
+    }
+  },
+
+  // Process refund
+  processRefund: async (_, { bookingId, amount, reason }, { models, user }) => {
+    // Optional: Add admin check
+    if (user && user.role !== 'admin') {
+      throw new Error('Unauthorized: Only admins can process refunds');
+    }
+
+    try {
+      const booking = await models.Booking.findById(bookingId).populate('package');
+      if (!booking) {
+        throw new UserInputError('Booking not found');
+      }
+
+      if (!booking.paymentId) {
+        throw new Error('No payment ID found for this booking');
+      }
+
+      // Create refund with Stripe
+      const refund = await stripe.refunds.create({
+        payment_intent: booking.paymentId,
+        amount: amount ? Math.round(amount * 100) : undefined, // Partial or full refund
+        reason: reason || 'requested_by_customer',
+        metadata: {
+          bookingId: bookingId,
+          originalAmount: booking.totalAmount,
+        },
+      });
+
+      // Update booking status
+      booking.status = 'Refunded';
+      booking.paymentStatus = 'refunded';
+      await booking.save();
+
+      // Restore package availability
+      if (booking.package) {
+        booking.package.availability += 1;
+        await booking.package.save();
+      }
+
+      // Populate and return updated booking
+      await booking.populate('package');
+      await booking.populate('user');
       
+      return booking;
+    } catch (error) {
+      throw new Error(`Failed to process refund: ${error.message}`);
+    }
+  },
+
+  // Enhanced updateBookingStatus with payment handling
+ updateBookingStatus: async (_, { bookingId, status }, { models, user }) => {
+  if (!user || (user.role !== 'admin' && user.role !== 'agent')) {
+    throw new AuthenticationError('You are not authorized to update bookings.');
+  }
+
+  try {
+    const booking = await models.Booking.findById(bookingId).populate('package');
+    if (!booking) {
+      throw new UserInputError('Booking not found');
+    }
+
+    booking.status = status;
+
+    if (status === 'Cancelled' || status === 'Refunded') {
+      if (booking.package) {
+        booking.package.availability += 1;
+        await booking.package.save();
+      }
+      booking.paymentStatus = 'refunded';
+    } else if (status === 'Confirmed') {
+      if (booking.package && booking.package.availability > 0) {
+        booking.package.availability -= 1;
+        await booking.package.save();
+      }
+    }
+
+    await booking.save();
+    await booking.populate('user');
+
+    return booking;
+  } catch (error) {
+    throw new Error(`Failed to update booking status: ${error.message}`);
+  }
+}
+,
+
+  // Existing travel package management mutations
   addTravelPackage: async (_, { title, description, price, duration, destination, availability }, { models, user }) => {
-        if (user.role !== 'admin') {
-            throw new Error('Unauthorized: Only admins can add travel packages');
-        }
+    if (user.role !== 'admin') {
+      throw new Error('Unauthorized: Only admins can add travel packages');
+    }
 
-        const newPackage = new models.TravelPackage({
-            title,
-            description,
-            price,
-            duration,
-            destination,
-            availability,
-        });
+    const newPackage = new models.TravelPackage({
+      title,
+      description,
+      price,
+      duration,
+      destination,
+      availability,
+    });
 
-        await newPackage.save();
-        return newPackage;
-    },
-    deleteTravelPackage:async(_,{id},{models,user})=>{
-      if (!user || user.role !== 'admin') {
-        throw new Error('Unauthorized: Only admins can delete travel packages');
+    await newPackage.save();
+    return newPackage;
+  },
+
+  deleteTravelPackage: async (_, { id }, { models, user }) => {
+    if (!user || user.role !== 'admin') {
+      throw new Error('Unauthorized: Only admins can delete travel packages');
+    }
+    try {
+      const deletePackage = await models.TravelPackage.findByIdAndDelete(id);
+      if (!deletePackage) {
+        throw new Error('Travel package not found or already deleted');
       }
-      try{
-    
-        const deletePackage = await models.TravelPackage.findByIdAndDelete(id);
-        if (!deletePackage) {
-          throw new Error('Travel package not found or already deleted');
-        }
-    
-        return deletePackage;
+
+      return deletePackage;
+    } catch (error) {
+      console.error('Error deleting package:', error);
+      throw new Error('Failed to delete package.');
+    }
+  },
+
+  updateTravelPackage: async (_, { id, title, description, price, duration, destination, availability }, { models, user }) => {
+    if (!user || user.role !== 'admin') {
+      throw new Error('Unauthorized: Only admins can update travel packages');
+    }
+
+    try {
+      // Find the package by ID and update fields
+      const updatedPackage = await models.TravelPackage.findByIdAndUpdate(
+        id,
+        {
+          title,
+          description,
+          price,
+          duration,
+          destination,
+          availability,
+        },
+        { new: true } // Return the updated document
+      );
+
+      if (!updatedPackage) {
+        throw new Error('Travel package not found');
       }
-      catch (error) {
-        console.error('Error deleting package:', error);
-        throw new Error('Failed to delete package.');
+
+      return updatedPackage;
+    } catch (err) {
+      console.error('Error updating package:', err);
+      throw new Error('Failed to update travel package');
+    }
+  },
+
+    cancelBooking: async (_, { bookingId, processRefund }, { models, user }) => {
+    if (!user) {
+      throw new AuthenticationError('You must be signed in to cancel a booking.');
+    }
+
+    try {
+      const booking = await models.Booking.findById(bookingId).populate('package');
+      if (!booking) {
+        throw new UserInputError('Booking not found');
       }
-    },
-    updateTravelPackage: async (_, { id, title, description, price, duration, destination, availability }, { models, user }) => {
-       
-        if (!user || user.role !== 'admin') {
-          throw new Error('Unauthorized: Only admins can update travel packages');
-        }
-  
+
+      if (String(booking.user) !== String(user.id) && user.role !== 'admin') {
+        throw new AuthenticationError('You are not authorized to cancel this booking.');
+      }
+
+      booking.status = 'Cancelled';
+      booking.paymentStatus = 'refunded';
+
+      if (booking.package) {
+        booking.package.availability += 1;
+        await booking.package.save();
+      }
+
+      await booking.save();
+
+      // Optional refund processing
+      let refundData = null;
+      if (processRefund && booking.paymentId) {
         try {
-          // Find the package by ID and update fields
-          const updatedPackage = await models.TravelPackage.findByIdAndUpdate(
-            id,
-            {
-              title,
-              description,
-              price,
-              duration,
-              destination,
-              availability,
+          const refund = await stripe.refunds.create({
+            payment_intent: booking.paymentId,
+            metadata: {
+              bookingId,
+              userId: booking.user._id.toString(),
+              reason: 'User requested cancellation',
             },
-            { new: true } // Return the updated document
-          );
-  
-          if (!updatedPackage) {
-            throw new Error('Travel package not found');
-          }
-  
-          return updatedPackage;
-        } catch (err) {
-          console.error('Error updating package:', err);
-          throw new Error('Failed to update travel package');
+          });
+          refundData = refund;
+        } catch (refundError) {
+          console.error('Refund error:', refundError);
+          // Don't fail the cancellation even if refund fails
         }
-      },
+      }
+
+      await booking.populate('user');
+
+      return {
+        booking,
+        refund: refundData || null,
+        message: 'Booking cancelled successfully',
+      };
+    } catch (error) {
+      throw new Error(`Failed to cancel booking: ${error.message}`);
+    }
+  },
 };
