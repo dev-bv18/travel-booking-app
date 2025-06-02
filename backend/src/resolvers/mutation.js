@@ -159,6 +159,7 @@ module.exports = {
 
   // Confirm payment after successful Stripe payment
   confirmPayment: async (_, { bookingId, paymentIntentId }, { models }) => {
+  console.log("🔍 confirmPayment called with:", { bookingId, paymentIntentId });
     try {
       // Verify payment with Stripe
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);

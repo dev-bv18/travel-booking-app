@@ -118,6 +118,8 @@ export const BOOK_PACKAGE = gql`
       paymentStatus
       paymentMethod
       totalAmount
+       createdAt
+      updatedAt
       user {
         id
         username
@@ -165,7 +167,6 @@ export const CONFIRM_PAYMENT = gql`
       date
       status
       paymentId
-      paymentStatus
       paymentMethod
       totalAmount
       user {

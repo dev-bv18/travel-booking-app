@@ -107,8 +107,7 @@ type PaymentAnalytics {
         
         confirmPayment(
             bookingId: ID!,
-            paymentIntentId: String!,
-            paymentStatus: String!
+            paymentIntentId: String!
         ): Booking
         
         processRefund(
@@ -137,6 +136,9 @@ type PaymentAnalytics {
             availability: Int!
         ): TravelPackage
 
-        cancelBooking(bookingId: ID!): Booking
+        cancelBooking(
+        bookingId: ID!
+        processRefund: Boolean
+        ): Booking
     }
 `;

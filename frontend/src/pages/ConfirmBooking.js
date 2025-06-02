@@ -94,7 +94,7 @@ const PaymentForm = ({
       });
 
       try {
-        const { data, error: mutationError } = await createPaymentIntent({
+        const { data, error } = await createPaymentIntent({
           variables: {
             packageId: packageDetails.id,
             userId,
@@ -103,17 +103,17 @@ const PaymentForm = ({
           }
         });
 
-        console.log("📊 GraphQL mutation response:", { data, mutationError });
+        console.log("📊 GraphQL mutation response:", { data, error });
 
-        if (mutationError) {
-          console.error("❌ GraphQL mutation error:", mutationError);
+        if (error) {
+          console.error("❌ GraphQL mutation error:", error);
           console.error("Error details:", {
-            message: mutationError.message,
-            graphQLErrors: mutationError.graphQLErrors,
-            networkError: mutationError.networkError
+            message: error.message,
+            graphQLErrors: error.graphQLErrors,
+            networkError: error.networkError
           });
           
-          toast.error(`GraphQL Error: ${mutationError.message}`, toastOptions);
+          toast.error(`GraphQL Error: ${error.message}`, toastOptions);
           return;
         }
 
