@@ -7,7 +7,7 @@ from rapidfuzz import fuzz
 
 load_dotenv()
 
-GRAPHQL_URL = os.getenv("GRAPHQL_ENDPOINT", "http://localhost:5000/graphql")
+GRAPHQL_URL = os.getenv("GRAPHQL_ENDPOINT", "http://localhost:4000/api")
 
 # Training examples
 examples = [
