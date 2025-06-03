@@ -15,7 +15,7 @@ import Footer from "./Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const stripePromise = loadStripe('pk_test_51RVVPxC0TNhxixUa2of2r6l3ACgw581RTqeXfEmGNv6LUXRviqEI0EpT8VJa70xFapUidEcPWlWjyf3gBWbdNP0H00YQaM3HIT');
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const PaymentForm = ({ 
   packageDetails, 
@@ -197,7 +197,7 @@ const PaymentForm = ({
     try {
       console.log("📝 Creating booking with variables:", {
         packageId: packageDetails.id,
-        userId,
+        userId:userId,
         date: formData.date,
         status: "Pending",
         totalAmount: totalPrice,
@@ -209,13 +209,14 @@ const PaymentForm = ({
       const bookingResult = await bookPackage({
         variables: {
           packageId: packageDetails.id,
-          userId,
+          userId:userId,
           date: formData.date,
           status: "Pending",
           totalAmount: totalPrice,
           paymentId: paymentIntentId,
           paymentStatus: "pending"
-        }
+        },
+        errorPolicy: 'all'
       });
 
       console.log("📋 Booking result:", bookingResult);

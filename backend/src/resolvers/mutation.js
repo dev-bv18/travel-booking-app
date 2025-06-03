@@ -47,8 +47,11 @@ module.exports = {
     return jwt.sign({ id: user._id, role: user.role, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '2h' });
   },
 
-  // Updated booking mutation with payment support
+  // Fixed booking mutation with better error handling and validation
   bookPackage: async (parent, args, { models, user }) => {
+    console.log('📝 bookPackage called with args:', args);
+    console.log('👤 User context:', user);
+
     const {
       packageId,
       userId,
@@ -60,82 +63,144 @@ module.exports = {
       totalAmount
     } = args;
 
-    const finalUserId = userId || user.id;
-    const User = await models.User.findById(finalUserId);
+    // Determine final user ID - prioritize userId from args, then user from context
+    const finalUserId = userId || (user ? user.id : null);
     
+    console.log('🔍 Final user ID determined:', finalUserId);
+
     if (!finalUserId) {
       throw new AuthenticationError('You must be signed in to book a package');
     }
 
-    if (!User) {
-      throw new Error('User not found');
+    // Validate required fields
+    if (!packageId) {
+      throw new UserInputError('Package ID is required');
     }
 
-    const travelPackage = await models.TravelPackage.findById(packageId);
-    if (!travelPackage) {
-      throw new Error('Travel package not found');
-    }
-
-    if (travelPackage.availability <= 0 && (status === 'Confirmed' || !status)) {
-      throw new Error('No availability for this package');
+    if (!date) {
+      throw new UserInputError('Booking date is required');
     }
 
     try {
-      const booking = await models.Booking.create({
+      // Find user
+      const userDoc = await models.User.findById(finalUserId);
+      if (!userDoc) {
+        throw new UserInputError('User not found');
+      }
+      console.log('✅ User found:', userDoc.username);
+
+      // Find package
+      const travelPackage = await models.TravelPackage.findById(packageId);
+      if (!travelPackage) {
+        throw new UserInputError('Travel package not found');
+      }
+      console.log('✅ Package found:', travelPackage.title);
+
+      // Check availability for confirmed bookings
+      const bookingStatus = status || 'Pending';
+      if (travelPackage.availability <= 0 && bookingStatus === 'Confirmed') {
+        throw new UserInputError('No availability for this package');
+      }
+
+      console.log('📋 Creating booking with data:', {
         package: travelPackage._id,
-        user: User._id,
+        user: userDoc._id,
         date,
-        status: status || 'Pending',
-        paymentId,
+        status: bookingStatus,
+        paymentId: paymentId || null,
         paymentStatus: paymentStatus || 'pending',
-        paymentMethod,
+        paymentMethod: paymentMethod || null,
         totalAmount: totalAmount || travelPackage.price,
       });
+
+      // Create booking
+      const booking = await models.Booking.create({
+        package: travelPackage._id,
+        user: userDoc._id,
+        date,
+        status: bookingStatus,
+        paymentId: paymentId || null,
+        paymentStatus: paymentStatus || 'pending',
+        paymentMethod: paymentMethod || null,
+        totalAmount: totalAmount || travelPackage.price,
+      });
+
+      console.log('✅ Booking created with ID:', booking._id);
 
       // Only reduce availability if booking is confirmed
       if (booking.status === 'Confirmed') {
         travelPackage.availability -= 1;
         await travelPackage.save();
+        console.log('📦 Package availability reduced to:', travelPackage.availability);
       }
 
-      // Add booking to user's bookings array
-      User.bookings.push(booking._id);
-      await User.save();
+      // Add booking to user's bookings array if it exists
+      if (userDoc.bookings) {
+        userDoc.bookings.push(booking._id);
+        await userDoc.save();
+        console.log('👤 Booking added to user bookings array');
+      }
 
       // Populate and return the booking
       await booking.populate('package');
       await booking.populate('user');
       
+      console.log('✅ Booking successfully created and populated');
       return booking;
     } catch (error) {
+      console.error('❌ Error in bookPackage:', error);
+      console.error('Error stack:', error.stack);
       throw new Error(`Failed to create booking: ${error.message}`);
     }
   },
 
   // Create payment intent with Stripe
   createPaymentIntent: async (_, { packageId, userId, amount, currency }, { models, user }) => {
+    console.log('💳 createPaymentIntent called with:', { packageId, userId, amount, currency });
+    console.log('👤 User context:', user);
+
     try {
-      const finalUserId = userId || user.id;
+      // Determine user ID
+      const finalUserId = userId || (user ? user.id : null);
       
+      if (!finalUserId) {
+        throw new AuthenticationError('You must be signed in to create a payment intent');
+      }
+
+      // Validate package
+      if (!packageId) {
+        throw new UserInputError('Package ID is required');
+      }
+
       // Verify package exists and get details
       const travelPackage = await models.TravelPackage.findById(packageId);
       if (!travelPackage) {
         throw new UserInputError('Package not found');
       }
+      console.log('✅ Package found for payment:', travelPackage.title);
 
       // Verify user exists
       const userDoc = await models.User.findById(finalUserId);
       if (!userDoc) {
         throw new UserInputError('User not found');
       }
+      console.log('✅ User found for payment:', userDoc.username);
 
       // Use package price if amount not provided
       const finalAmount = amount || travelPackage.price;
+      const finalCurrency = currency || 'inr';
+
+      console.log('💰 Payment intent details:', {
+        amount: finalAmount,
+        currency: finalCurrency,
+        packageTitle: travelPackage.title,
+        userEmail: userDoc.email
+      });
 
       // Create payment intent with Stripe
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(finalAmount * 100), // Convert to cents
-        currency: currency || 'inr',
+        amount: Math.round(finalAmount * 100), // Convert to smallest currency unit
+        currency: finalCurrency,
         metadata: {
           packageId,
           userId: finalUserId,
@@ -146,6 +211,8 @@ module.exports = {
         description: `Travel package booking - ${travelPackage.title}`,
       });
 
+      console.log('✅ Stripe payment intent created:', paymentIntent.id);
+
       return {
         clientSecret: paymentIntent.client_secret,
         paymentIntentId: paymentIntent.id,
@@ -153,13 +220,15 @@ module.exports = {
         currency: paymentIntent.currency,
       };
     } catch (error) {
+      console.error('❌ Error in createPaymentIntent:', error);
+      console.error('Error stack:', error.stack);
       throw new Error(`Failed to create payment intent: ${error.message}`);
     }
   },
 
   // Confirm payment after successful Stripe payment
   confirmPayment: async (_, { bookingId, paymentIntentId }, { models }) => {
-  console.log("🔍 confirmPayment called with:", { bookingId, paymentIntentId });
+    console.log("🔍 confirmPayment called with:", { bookingId, paymentIntentId });
     try {
       // Verify payment with Stripe
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
@@ -195,6 +264,7 @@ module.exports = {
       
       return booking;
     } catch (error) {
+      console.error('❌ Error in confirmPayment:', error);
       throw new Error(`Failed to confirm payment: ${error.message}`);
     }
   },
@@ -249,41 +319,40 @@ module.exports = {
   },
 
   // Enhanced updateBookingStatus with payment handling
- updateBookingStatus: async (_, { bookingId, status }, { models, user }) => {
-  if (!user || (user.role !== 'admin' && user.role !== 'agent')) {
-    throw new AuthenticationError('You are not authorized to update bookings.');
-  }
-
-  try {
-    const booking = await models.Booking.findById(bookingId).populate('package');
-    if (!booking) {
-      throw new UserInputError('Booking not found');
+  updateBookingStatus: async (_, { bookingId, status }, { models, user }) => {
+    if (!user || (user.role !== 'admin' && user.role !== 'agent')) {
+      throw new AuthenticationError('You are not authorized to update bookings.');
     }
 
-    booking.status = status;
+    try {
+      const booking = await models.Booking.findById(bookingId).populate('package');
+      if (!booking) {
+        throw new UserInputError('Booking not found');
+      }
 
-    if (status === 'Cancelled' || status === 'Refunded') {
-      if (booking.package) {
-        booking.package.availability += 1;
-        await booking.package.save();
+      booking.status = status;
+
+      if (status === 'Cancelled' || status === 'Refunded') {
+        if (booking.package) {
+          booking.package.availability += 1;
+          await booking.package.save();
+        }
+        booking.paymentStatus = 'refunded';
+      } else if (status === 'Confirmed') {
+        if (booking.package && booking.package.availability > 0) {
+          booking.package.availability -= 1;
+          await booking.package.save();
+        }
       }
-      booking.paymentStatus = 'refunded';
-    } else if (status === 'Confirmed') {
-      if (booking.package && booking.package.availability > 0) {
-        booking.package.availability -= 1;
-        await booking.package.save();
-      }
+
+      await booking.save();
+      await booking.populate('user');
+
+      return booking;
+    } catch (error) {
+      throw new Error(`Failed to update booking status: ${error.message}`);
     }
-
-    await booking.save();
-    await booking.populate('user');
-
-    return booking;
-  } catch (error) {
-    throw new Error(`Failed to update booking status: ${error.message}`);
-  }
-}
-,
+  },
 
   // Existing travel package management mutations
   addTravelPackage: async (_, { title, description, price, duration, destination, availability }, { models, user }) => {
@@ -352,7 +421,7 @@ module.exports = {
     }
   },
 
-    cancelBooking: async (_, { bookingId, processRefund }, { models, user }) => {
+  cancelBooking: async (_, { bookingId, processRefund }, { models, user }) => {
     if (!user) {
       throw new AuthenticationError('You must be signed in to cancel a booking.');
     }
@@ -400,7 +469,7 @@ module.exports = {
 
       return {
         booking,
-        refund: refundData || null,
+        refund: refundData ? refundData.id : null,
         message: 'Booking cancelled successfully',
       };
     } catch (error) {

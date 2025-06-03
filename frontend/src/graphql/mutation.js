@@ -93,7 +93,7 @@ export const DELETE_PACKAGE = gql`
 export const BOOK_PACKAGE = gql`
   mutation BookPackage(
     $packageId: ID!
-    $userId: ID!
+    $userId: ID
     $date: String!
     $status: String
     $paymentId: String

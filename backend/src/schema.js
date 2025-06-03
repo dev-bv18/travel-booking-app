@@ -49,26 +49,32 @@ module.exports = gql`
     }
 
     type PaymentStatus {
-    paymentIntentId: String!
-    status: String!
-    amount: Float!
-    currency: String!
-    paymentMethod: String
-    createdAt: String
-}
+        paymentIntentId: String!
+        status: String!
+        amount: Float!
+        currency: String!
+        paymentMethod: String
+        createdAt: String
+    }
 
-type PackageStats {
-    packageTitle: String!
-    bookings: Int!
-    revenue: Float!
-}
+    type PackageStats {
+        packageTitle: String!
+        bookings: Int!
+        revenue: Float!
+    }
 
-type PaymentAnalytics {
-    totalRevenue: Float!
-    totalBookings: Int!
-    averageBookingValue: Float!
-    packageStats: [PackageStats!]!
-}
+    type PaymentAnalytics {
+        totalRevenue: Float!
+        totalBookings: Int!
+        averageBookingValue: Float!
+        packageStats: [PackageStats!]!
+    }
+
+    type CancelBookingResult {
+        booking: Booking!
+        refund: String
+        message: String!
+    }
 
     type Query {
         getPackages: [TravelPackage!]
@@ -87,11 +93,12 @@ type PaymentAnalytics {
         registerUser(username: String!, email: String!, password: String!, role: String): User
         loginUser(email: String!, password: String!): String
         
+        # Fixed bookPackage mutation - made optional fields truly optional
         bookPackage(
             packageId: ID!, 
-            userId: ID!, 
+            userId: ID, 
             date: String!, 
-            status: String!,
+            status: String,
             paymentId: String,
             paymentStatus: String,
             paymentMethod: String,
@@ -100,9 +107,9 @@ type PaymentAnalytics {
         
         createPaymentIntent(
             packageId: ID!,
-            userId: ID!,
-            amount: Float!,
-            currency: String!
+            userId: ID,
+            amount: Float,
+            currency: String
         ): PaymentIntent
         
         confirmPayment(
@@ -137,8 +144,8 @@ type PaymentAnalytics {
         ): TravelPackage
 
         cancelBooking(
-        bookingId: ID!
-        processRefund: Boolean
-        ): Booking
+            bookingId: ID!
+            processRefund: Boolean
+        ): CancelBookingResult
     }
 `;
